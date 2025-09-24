@@ -1,4 +1,5 @@
 // NavBar.js: Exports Navigation Bar component to efficiently navigate across each page 
+"use client";
 import Link from 'next/link';
 
 const NavBar = () => {
