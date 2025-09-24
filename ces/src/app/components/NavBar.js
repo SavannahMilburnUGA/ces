@@ -1,1 +1,2 @@
 // NavBar.js: Exports Navigation Bar component to efficiently navigate across each page 
+
