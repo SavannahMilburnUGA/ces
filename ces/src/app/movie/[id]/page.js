@@ -6,14 +6,14 @@
 
 // src/app/movie/[id]/page.js
 
-
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import NavBar from "@/app/components/NavBar";
 
 export default function MovieDetails() {
   const params = useParams();
+  const router = useRouter();
   const { id } = params;
 
   // Dummy movie data for prototype
@@ -26,6 +26,11 @@ export default function MovieDetails() {
       "After the devastating events of Avengers: Infinity War, the universe is in ruins...",
     showtimes: ["2:00 PM", "5:00 PM", "8:00 PM"],
     trailerUrl: "https://www.youtube.com/embed/TcMBFSGVi1c",
+  };
+
+  // Simple click: just go to booking page
+  const handleBookingClick = () => {
+    router.push(`/booking`);
   };
 
   return (
@@ -52,9 +57,22 @@ export default function MovieDetails() {
             <p className="font-semibold">Rating: {movie.rating}</p>
             <p className="font-medium">Genre: {movie.genre}</p>
             <p>{movie.description}</p>
-            <p className="font-medium">
-              Showtimes: {movie.showtimes.join(", ")}
-            </p>
+
+            {/* Showtimes as simple buttons */}
+            <div className="mt-4">
+              <p className="font-medium mb-2">Showtimes:</p>
+              <div className="flex flex-wrap gap-2">
+                {movie.showtimes.map((time, index) => (
+                  <button
+                    key={index}
+                    onClick={handleBookingClick} // now all buttons just go to /booking
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </main>
