@@ -20,9 +20,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <header className="navbar">Navbar</header>
+        {/* <header className="navbar">Navbar</header>
        
-        <footer className="footer">Footer</footer>
+        <footer className="footer">Footer</footer> */}
         {children}
       </body>
     </html>

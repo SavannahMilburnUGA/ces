@@ -10,11 +10,28 @@
 // Embed trailer here or on dynamic movie page
 
 // Return Home component
-export default function Home() {
+"use client";
+import { useState } from 'react';
+import NavBar from './components/NavBar';
+import SearchBar from './components/SearchBar';
 
-  return(
-    <div>
-      <h1> This is a placeholder Home page component. </h1>
+export default function Home() {
+  // For  Search bar function
+  const [search, setSearch] = useState('');
+  // For filtering by genre
+  const [genre, setGenre] = useState('');
+  // Testing using dummy genres
+  const genres = ['A', 'B', 'C'];
+  const handleSearch = (searchTerm) => {
+    setSearch(searchTerm);
+  }; // handleSearch
+  const handleGenre = (genre) => {
+    setGenre(genre);
+  }; // handleGenre
+  return( 
+    <div className= "min-h-screen bg-green-500">
+        <NavBar />
+        <SearchBar onSearch={handleSearch} onGenreFilter={handleGenre} genres={genres} />
     </div>
   ); // return
 } // page
