@@ -97,7 +97,6 @@ export default function Home() {
 
   return( 
     <div className= "min-h-screen">
-        <NavBar />
         <SearchBar onSearch={handleSearch} onGenreFilter={handleGenre} genres={genres} />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-12">
