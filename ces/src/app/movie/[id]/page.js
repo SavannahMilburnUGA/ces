@@ -12,6 +12,31 @@ import { useParams, useRouter } from "next/navigation";
 import NavBar from "@/app/components/NavBar";
 
 export default function MovieDetails() {
+  const { id } = useParams();
+  const router = useRouter();
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchMovie() {
+      try {
+        const res = await fetch(`/api/movies/${id}`);
+        const data = await res.json();
+        setMovie(data.movie);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch movie:", error);
+        setLoading(false);
+      }
+    }
+
+    if (id) fetchMovie();
+  }, [id]);
+
+  if (loading) return <div>Loading...</div>;
+  if (!movie) return <div>Movie not found</div>;
+/*
+export default function MovieDetails() {
   const params = useParams();
   const router = useRouter();
   const { id } = params;
@@ -27,7 +52,7 @@ export default function MovieDetails() {
     showtimes: ["2:00 PM", "5:00 PM", "8:00 PM"],
     trailerUrl: "https://www.youtube.com/embed/TcMBFSGVi1c",
   };
-
+*/
   // Simple click: just go to booking page
   const handleBookingClick = () => {
     router.push(`/booking`);

@@ -11,12 +11,13 @@
 
 // Return Home component
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import Movie from './components/Movie';
 
 export default function Home() {
+  const [allMovies, setAllMovies] = useState([]);
   // For  Search bar function
   const [search, setSearch] = useState('');
   // For filtering by genre
@@ -30,7 +31,22 @@ export default function Home() {
     setGenre(genre);
   }; // handleGenre
 
-
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        const url = `/api/movies`; 
+        const res = await fetch(url);
+        const data = await res.json();
+        setAllMovies(data.movies);
+      } catch (error) {
+        console.error('Failed to fetch movies:', error);
+      }
+    }
+  
+    fetchMovies();
+  }, []);
+  
+/*
   // SAMPLE MOVIES for TESTING - DELETE 
   const sampleMovies = [
     {
@@ -51,19 +67,24 @@ export default function Home() {
       showtimes: ['3:00 PM', '6:00 PM', '9:00 PM'],
       showDate: new Date('2024-01-10') // Past date - Currently Running
     },]
-
+*/
+  const filteredMovies = allMovies.filter(movie => {
+    const matchesTitle = movie.title.toLowerCase().includes(search.toLowerCase());
+    const matchesGenre = genre === '' || movie.genre === genre;
+    return matchesTitle && matchesGenre;
+  });
   // Determing Currently Running & Coming Soon movies
   const runOrSoon = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const current = sampleMovies.filter(movie => {
+    const current = allMovies.filter(movie => {
       const showDate = new Date(movie.showDate);
       showDate.setHours(0, 0, 0, 0);
       return showDate <= today;
     }); // current
 
-    const comingSoon = sampleMovies.filter(movie => {
+    const comingSoon = allMovies.filter(movie => {
       const showDate = new Date(movie.showDate);
       showDate.setHours(0, 0, 0, 0);
       return showDate > today;
