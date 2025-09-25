@@ -33,6 +33,12 @@ const NavBar = () => {
               >
                 By Showtimes
               </Link>
+               <Link 
+                href="/admin/addMovie" 
+                className="hover:text-red-400 transition duration-200"
+              >
+                Admin
+              </Link>
             </div>
           </div>
 
@@ -60,11 +66,18 @@ const NavBar = () => {
               By Showtimes
             </Link>
             <Link 
+                href="/admin/addMovie" 
+                className="block px-3 py-2 text-base font-medium hover:text-red-400 transition"
+                >
+                Admin
+              </Link>
+            <Link 
               href="/about" 
               className="block px-3 py-2 text-base font-medium hover:text-red-400 transition"
             >
                By Genre
             </Link>
+      
           </div>
         </div>
       </div>
