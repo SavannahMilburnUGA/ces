@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import NavBar from "@/app/components/NavBar";
 
 export default function BookingPage() {
   const searchParams = useSearchParams();
@@ -10,7 +9,7 @@ export default function BookingPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <NavBar />
+      
       <main className="container mx-auto p-6">
         <h1 className="text-3xl font-bold mb-4">Booking Page (Prototype)</h1>
         <p className="mb-2">Movie: <span className="font-semibold">{movie}</span></p>

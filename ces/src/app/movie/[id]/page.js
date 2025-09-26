@@ -7,9 +7,8 @@
 // src/app/movie/[id]/page.js
 
 "use client";
-
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import NavBar from "@/app/components/NavBar";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -20,9 +19,9 @@ export default function MovieDetails() {
   useEffect(() => {
     async function fetchMovie() {
       try {
-        const res = await fetch(`/api/movies/${id}`);
+        const res = await fetch(`/api/movies/${id}`,{ cache: "no-store" });
         const data = await res.json();
-        setMovie(data.movie);
+        setMovie(data);
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch movie:", error);
@@ -58,9 +57,19 @@ export default function MovieDetails() {
     router.push(`/booking`);
   };
 
+function toYouTubeEmbed(url) {
+  if (!url) return "";
+  const m =
+    url.match(/[?&]v=([^&]+)/) ||
+    url.match(/youtu\.be\/([^?&/]+)/) ||
+    url.match(/youtube\.com\/shorts\/([^?&/]+)/);
+  const id = m ? m[1] : "";
+  return id ? `https://www.youtube.com/embed/${id}` : "";
+}
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <NavBar />
+      
       <main className="container mx-auto p-6">
         <h1 className="text-4xl font-bold mb-6">{movie.title}</h1>
 
@@ -70,7 +79,7 @@ export default function MovieDetails() {
           <div className="md:w-1/2 w-full h-64 md:h-96">
             <iframe
               className="w-full h-full rounded-lg"
-              src={movie.trailerUrl}
+              src={toYouTubeEmbed(movie.trailerUrl)}
               title={`${movie.title} Trailer`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

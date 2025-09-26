@@ -23,7 +23,7 @@ const Movie = ({ movie }) => {
         <Card className="flex-shrink-0 w-64 h-96 hover:shadow-lg transition-shadow duration-300">
             <div className="w-full h-48 relative mb-3">
                 {/* Use Next Image instead ?  */}
-                <img src={posterUrl} alt={title}  fill className="object-cover rounded-md" sizes="256px" onError={(e) => {e.target.src = '/placeholder-poster.jpg';}}
+                <img src={posterUrl} alt={title} className="object-cover rounded-md" sizes="256px" onError={(e) => {e.target.src = '/placeholder-poster.jpg';}}
             />
                 <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs font-semibold">
                     {rating}

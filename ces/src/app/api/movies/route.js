@@ -27,9 +27,9 @@ export async function POST(req) {
 // GET request 
 export async function GET() { 
   
-  await connect();
+  await connectDB();
   try{
-  const movies = await Movie.find().sort({ createdAT: -1}.lean());
+  const movies = await Movie.find().sort({ createdAt: -1 });
   return NextResponse.json({ message: "Movie retreived", movies},{status:200});
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 400 });

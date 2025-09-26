@@ -12,7 +12,6 @@
 // Return Home component
 "use client";
 import { useEffect, useState } from 'react';
-import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import Movie from './components/Movie';
 
@@ -30,20 +29,33 @@ export default function Home() {
   const handleGenre = (genre) => {
     setGenre(genre);
   }; // handleGenre
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    let alive = true; 
     async function fetchMovies() {
       try {
+        setLoading(true);
+        setError("");
         const url = `/api/movies`; 
         const res = await fetch(url);
         const data = await res.json();
-        setAllMovies(data.movies);
+       
+         const arr = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.movies) ? data.movies : [];
+
+      if (alive) setAllMovies(arr);
       } catch (error) {
-        console.error('Failed to fetch movies:', error);
+        if (alive) setError(error.message || 'Failed to fetch movies:');
+      } finally {
+        if (alive) setLoading(false);
       }
     }
   
     fetchMovies();
+    return () => { alive = false; };
   }, []);
   
 /*

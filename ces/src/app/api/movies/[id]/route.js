@@ -6,19 +6,20 @@ import mongoose from "mongoose";
 export async function GET(req, { params }) {
   await connectDB();
 
-  const { id } = params;
+  const { id } = await params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid movie ID" }, { status: 400 });
   }
 
   try {
-    const movie = await Movie.findById(id);
+    const _id = new mongoose.Types.ObjectId(id);
+    const movie = await Movie.findById({_id});
     if (!movie) {
       return NextResponse.json({ error: "Movie not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ movie });
+    return NextResponse.json(movie);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

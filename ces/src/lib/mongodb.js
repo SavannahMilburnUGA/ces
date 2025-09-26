@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const { MONGODB_URI } = process.env;
@@ -15,5 +16,5 @@ export async function connectDB() {
   return cached.conn;
 }
 
-
+export default connectDB;
 
