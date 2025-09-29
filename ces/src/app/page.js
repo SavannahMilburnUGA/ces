@@ -1,15 +1,4 @@
 // page.js: Exports Home page component of CES website
-
-// NavBar + Search Bar w/ Filter for genre ?
-
-// Currently Running movies
-// Coming Soon movies 
-// Retrieves movies dynamically from database
-// Hard coded show times for each movie
-
-// Embed trailer here or on dynamic movie page
-
-// Return Home component
 "use client";
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
@@ -17,15 +6,17 @@ import Movie from './components/Movie';
 
 export default function Home() {
   const [allMovies, setAllMovies] = useState([]);
-  // For  Search bar function
+  // For Search bar function
   const [search, setSearch] = useState('');
   // For filtering by genre
   const [genre, setGenre] = useState('');
-  // Testing using dummy genres
-  const genres = ['A', 'B', 'C'];
+  // Get genres from all movies in database 
+  const genres = [...new Set(allMovies.map(movie => movie.genre))].filter(Boolean).sort();
+  // Handle search from user input in search bar
   const handleSearch = (searchTerm) => {
     setSearch(searchTerm);
   }; // handleSearch
+  // Handle filtering by genre from user input in dropdown genre filter
   const handleGenre = (genre) => {
     setGenre(genre);
   }; // handleGenre
@@ -52,29 +43,30 @@ export default function Home() {
       } finally {
         if (alive) setLoading(false);
       }
-    }
+    } // fetchMovies
   
     fetchMovies();
     return () => { alive = false; };
-  }, []);
+  }, []); // useEffect
   
   const filteredMovies = allMovies.filter(movie => {
     const matchesTitle = movie.title.toLowerCase().includes(search.toLowerCase());
     const matchesGenre = genre === '' || movie.genre === genre;
     return matchesTitle && matchesGenre;
-  });
+  }); // filteredMovies
+  
   // Determing Currently Running & Coming Soon movies
   const runOrSoon = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const current = allMovies.filter(movie => {
+    const current = filteredMovies.filter(movie => {
       const showDate = new Date(movie.showDate);
       showDate.setHours(0, 0, 0, 0);
       return showDate <= today;
     }); // current
 
-    const comingSoon = allMovies.filter(movie => {
+    const comingSoon = filteredMovies.filter(movie => {
       const showDate = new Date(movie.showDate);
       showDate.setHours(0, 0, 0, 0);
       return showDate > today;
