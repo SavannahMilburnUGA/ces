@@ -1,15 +1,17 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Montserrat } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/NavBar"; 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"], 
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"], 
 });
 
 export const metadata = {
@@ -20,10 +22,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        { 
+      <body className={`${archivo.variable} ${montserrat.variable}`}>
        <NavBar />
-         }
         {children}
       </body>
     </html>

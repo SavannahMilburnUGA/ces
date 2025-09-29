@@ -58,28 +58,6 @@ export default function Home() {
     return () => { alive = false; };
   }, []);
   
-/*
-  // SAMPLE MOVIES for TESTING - DELETE 
-  const sampleMovies = [
-    {
-      _id: '1',
-      title: 'The Dark Knight',
-      posterUrl: 'https://via.placeholder.com/300x450/333333/ffffff?text=The+Dark+Knight',
-      rating: 'PG-13',
-      genre: 'Action',
-      showtimes: ['2:00 PM', '5:00 PM', '8:00 PM'],
-      showDate: new Date('2024-01-15') // Past date - Currently Running
-    },
-    {
-      _id: '2',
-      title: 'Inception',
-      posterUrl: 'https://via.placeholder.com/300x450/444444/ffffff?text=Inception',
-      rating: 'PG-13',
-      genre: 'Sci-Fi',
-      showtimes: ['3:00 PM', '6:00 PM', '9:00 PM'],
-      showDate: new Date('2024-01-10') // Past date - Currently Running
-    },]
-*/
   const filteredMovies = allMovies.filter(movie => {
     const matchesTitle = movie.title.toLowerCase().includes(search.toLowerCase());
     const matchesGenre = genre === '' || movie.genre === genre;
@@ -110,9 +88,9 @@ export default function Home() {
   return( 
     <div className= "min-h-screen">
         <SearchBar onSearch={handleSearch} onGenreFilter={handleGenre} genres={genres} />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-8 py-8">
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Currently Running</h2>
+          <h2 className="text-3xl font-bold mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-archivo)' }}>CURRENTLY RUNNING</h2>
           {current.length === 0 ? (<p className="text-gray-600 text-center py-8">No currently running movies available.</p>) : (
             <div className="overflow-x-auto">
               <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
@@ -123,7 +101,7 @@ export default function Home() {
         </div>
 
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Coming Soon</h2>
+          <h2 className="text-3xl font-bold mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-archivo)' }}>COMING SOON</h2>
           {comingSoon.length === 0 ? (
             <p className="text-gray-600 text-center py-8">No upcoming movies available.</p>) : (
               <div className="overflow-x-auto">

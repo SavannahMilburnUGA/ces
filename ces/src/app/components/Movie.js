@@ -4,11 +4,10 @@ import Link from "next/link";
 import Card from "./Card";
 
 const Movie = ({ movie }) => {
-
     // Missing movie
     if (!movie) {
         return null;
-    } // i 
+    } // if
 
     const {
         _id,
@@ -20,38 +19,48 @@ const Movie = ({ movie }) => {
     } = movie;
 
     return (
-        <Card className="flex-shrink-0 w-64 h-96 hover:shadow-lg transition-shadow duration-300">
-            <div className="w-full h-48 relative mb-3">
-                {/* Use Next Image instead ?  */}
-                <img src={posterUrl} alt={title} className="object-cover rounded-md" sizes="256px" onError={(e) => {e.target.src = '/placeholder-poster.jpg';}}
-            />
-                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs font-semibold">
+        <Card className="flex-shrink-0 w-70 flex flex-col hover:shadow-lg transition-shadow duration-300" style={{ backgroundColor: '#161A1D', borderColor: '#660708' }}>
+            <div className="flex justify-between items-center mb-3"> 
+                <span className="px-2 py-1 rounded text-xs font-semibold" style={{ backgroundColor: '#BA181B', color: '#F5F3F4' }}>
                     {rating}
-                </div>
+                </span>
+                <span className="px-2 py-1 rounded-full text-xs" style={{ backgroundColor: '#660708', color: '#D3D3D3' }}>
+                    {genre}
+                </span>
             </div>
+
+            <div className="w-full h-80 relative mb-3 flex items-center justify-center">
+                <img 
+                    src={posterUrl} 
+                    alt={title} 
+                    className="object-cover rounded-md w-full h-full" 
+                    onError={(e) => {e.target.src = '/placeholder-poster.jpg';}}
+                />
+            </div>
+
+            <h3 className="text-lg font-semibold mb-3 line-clamp-2" style={{ color: '#0B090A', fontFamily: 'var(--font-archivo)' }}>
+                {title}
+            </h3>
       
-            <div className="flex flex-col h-32 justify-between">
-                <div>
-                    <h3 className="text-lg font-semibold mb-1 line-clamp-2">{title}</h3>
-                        <div className="text-sm text-gray-600 mb-2">
-                            <span className="inline-block bg-gray-100 px-2 py-1 rounded-full text-xs"> {genre} </span>
-                        </div>
-                </div>
-                
-            <div className="mb-3">
-                <p className="text-xs text-gray-500 mb-1">Showtimes:</p>
-                <div className="flex flex-wrap gap-1"> {showtimes.slice(0, 3).map((time, index) => (
-                    <span key={index} className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded"> {time} </span>
-                ))}
+            <div className="mb-4 flex-grow">
+                <p className="text-xs mb-2" style={{ color: '#161A1D' }}>Showtimes:</p>
+                <div className="flex flex-wrap gap-1">
+                    {showtimes.slice(0, 3).map((time, index) => (
+                        <span key={index} className="text-xs px-2 py-1 rounded" style={{ backgroundColor: '#660708', color: '#F5F3F4' }}>
+                            {time}
+                        </span>
+                    ))}
                 </div>
             </div>
             <Link 
-            href={`/movie/${_id}`}
-            className="bg-red-600 text-white text-center px-4 py-2 rounded hover:bg-red-700 transition duration-200 text-sm font-medium"
-                >
+                href={`/movie/${_id}`}
+                className="text-center px-4 py-2 rounded transition duration-200 text-sm font-medium block mt-auto"
+                style={{ backgroundColor: '#BA181B', color: '#F5F3F4' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5383B'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#BA181B'}
+            >
                 View Details
             </Link>
-            </div>
         </Card>
     );
 }; // Movie

@@ -1,14 +1,16 @@
 // NavBar.js: Exports Navigation Bar component to efficiently navigate across each page 
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 
 const NavBar = () => {
   return (
-    <nav className="bg-gray-900 text-white shadow-lg">
+    <nav style={{ backgroundColor:'#0B090A'}} className="shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-red-500 hover:text-red-400 transition">
+          <div className="flex items-center gap-3">
+            <Image src="/logo.svg" alt = "CES logo" width={60} height={60} className="object-contain"/>
+            <Link href="/" className="text-2xl font-bold hover:opacity-90 transition" style={{ fontFamily: 'var(--font-archivo)' }}>
               CES
             </Link>
           </div>
@@ -16,26 +18,30 @@ const NavBar = () => {
           <div className="hidden md:block">
             <div className="flex items-center space-x-8">
               <Link 
-                href="/" 
-                className="hover:text-red-400 transition duration-200"
+                href="/" className="transition duration-200" style={{ color: '#D3D3D3' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#E5383B'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#D3D3D3'}
               >
                 Home
               </Link>
               <Link 
-                href="/movies" 
-                className="hover:text-red-400 transition duration-200"
+                href="/movies" className="transition duration-200" style={{ color: '#D3D3D3' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#E5383B'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#D3D3D3'}
               >
                 All Movies
               </Link>
               <Link 
-                href="/showtimes" 
-                className="hover:text-red-400 transition duration-200"
+                href="/showtimes" className="transition duration-200" style={{ color: '#D3D3D3' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#E5383B'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#D3D3D3'}
               >
                 By Showtimes
               </Link>
                <Link 
-                href="/admin/addMovie" 
-                className="hover:text-red-400 transition duration-200"
+                href="/admin/addMovie" className="transition duration-200" style={{ color: '#D3D3D3' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#E5383B'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#D3D3D3'}
               >
                 Admin
               </Link>
@@ -54,26 +60,26 @@ const NavBar = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link 
-              href="/movies" 
-              className="block px-3 py-2 text-base font-medium hover:text-red-400 transition"
+              href="/movies" style = {{color: '#D3D3D3'}}
+              className="block px-3 py-2 text-base font-medium hover:text-[#E5383B] transition"
             >
               All Movies
             </Link>
             <Link 
-              href="/showtimes" 
-              className="block px-3 py-2 text-base font-medium hover:text-red-400 transition"
+              href="/showtimes" style = {{color: '#D3D3D3'}}
+              className="block px-3 py-2 text-base font-medium hover:text-[#E5383B] transition"
             >
               By Showtimes
             </Link>
             <Link 
-                href="/admin/addMovie" 
-                className="block px-3 py-2 text-base font-medium hover:text-red-400 transition"
+                href="/admin/addMovie" style = {{color: '#D3D3D3'}}
+                className="block px-3 py-2 text-base font-medium hover:text-[#E5383B] transition"
                 >
                 Admin
               </Link>
             <Link 
-              href="/about" 
-              className="block px-3 py-2 text-base font-medium hover:text-red-400 transition"
+              href="/about" style = {{color: '#D3D3D3'}}
+              className="block px-3 py-2 text-base font-medium hover:text-[#E5383B] transition"
             >
                By Genre
             </Link>
