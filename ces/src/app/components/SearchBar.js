@@ -1,5 +1,4 @@
-// SearchBar.js: Exports Search Bar component to search for movies by title 
-// Could also include filtering by genre if it is not a separate component ? 
+// SearchBar.js: Exports Search Bar component to search for movies by title & includes filtering movies by genre
 import { useState, useEffect } from 'react';
 
 const SearchBar = ({ onSearch, onGenreFilter, genres = [] }) => {

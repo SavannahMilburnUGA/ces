@@ -2,9 +2,7 @@
 // Fetch movie data dynamically from our database -> display movie page for that specific movie
 
 // Displays: poster, title, rating, description, available showtimes, trailer
-// Embed trailer here or on home page
-
-// src/app/movie/[id]/page.js
+// Embed trailer here
 
 "use client";
 import { useEffect, useState } from "react";
@@ -34,24 +32,7 @@ export default function MovieDetails() {
 
   if (loading) return <div>Loading...</div>;
   if (!movie) return <div>Movie not found</div>;
-/*
-export default function MovieDetails() {
-  const params = useParams();
-  const router = useRouter();
-  const { id } = params;
 
-  // Dummy movie data for prototype
-  const movie = {
-    title: "Avengers: Endgame",
-    posterUrl: "/placeholder-poster.jpg",
-    rating: "PG-13",
-    genre: "Action",
-    description:
-      "After the devastating events of Avengers: Infinity War, the universe is in ruins...",
-    showtimes: ["2:00 PM", "5:00 PM", "8:00 PM"],
-    trailerUrl: "https://www.youtube.com/embed/TcMBFSGVi1c",
-  };
-*/
   // Simple click: just go to booking page
   const handleBookingClick = () => {
     router.push(`/booking`);
@@ -73,21 +54,18 @@ function toYouTubeEmbed(url) {
       <main className="container mx-auto p-6">
         <h1 className="text-4xl font-bold mb-6">{movie.title}</h1>
 
-        {/* Two-column layout */}
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Trailer Left */}
-          <div className="md:w-1/2 w-full h-64 md:h-96">
-            <iframe
-              className="w-full h-full rounded-lg"
-              src={toYouTubeEmbed(movie.trailerUrl)}
-              title={`${movie.title} Trailer`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+          {/* Poster Left */}
+          <div className="md:w-1/4 w-full">
+            <img 
+              src={movie.posterUrl} 
+              alt={movie.title}
+              className="w-full rounded-lg object-cover"
+              onError={(e) => {e.target.src = '/placeholder-poster.jpg';}}
+            />
           </div>
-
-          {/* Info/Text Right */}
-          <div className="md:w-1/2 w-full flex flex-col justify-start gap-4">
+          {/* Info Middle */}
+          <div className="md:w-3/8 w-full flex flex-col justify-start gap-4">
             <p className="font-semibold">Rating: {movie.rating}</p>
             <p className="font-medium">Genre: {movie.genre}</p>
             <p>{movie.description}</p>
@@ -107,6 +85,16 @@ function toYouTubeEmbed(url) {
                 ))}
               </div>
             </div>
+          </div>
+          {/* Trailer Right */}
+          <div className="md:w-3/8 w-full h-64 md:h-96">
+            <iframe
+              className="w-full h-full rounded-lg"
+              src={toYouTubeEmbed(movie.trailerUrl)}
+              title={`${movie.title} Trailer`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
         </div>
       </main>
