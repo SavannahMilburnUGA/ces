@@ -45,6 +45,26 @@ const NavBar = () => {
               >
                 Admin
               </Link>
+
+              <Link 
+                href="/login"
+                className="transition duration-200 border border-[#E5383B] px-4 py-1 rounded-md"
+                style={{ color: '#E5383B' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#E5383B';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = '#E5383B';
+                }}
+              >
+                Login
+              </Link>
+
+
+
+
             </div>
           </div>
 
