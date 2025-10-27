@@ -11,35 +11,35 @@ export default function LoginPage() {
     const [remember, setRemember] = useState("");
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-
-        try {
-          const res = await fetch("/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
+      e.preventDefault();
+      setError("");
     
-          const data = await res.json();
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
     
-          if (!res.ok) {
-            throw new Error(data.message || "Invalid email or password.");
-          }
+        const data = await res.json();
     
-          if (remember) {
-            localStorage.setItem("rememberUser", email);
-          } else {
-            localStorage.removeItem("rememberUser");
-          }
-    
-          //Redirect regular users to the home page after login
-          router.push("/");
-        } catch (err) {
-          console.error(err);
-          setError(err.message || "Login failed. Please try again.");
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Login failed. Please try again.");
         }
-      };
+    
+        if (remember) {
+          localStorage.setItem("rememberUser", email);
+        } else {
+          localStorage.removeItem("rememberUser");
+        }
+    
+        // 🚀 Redirect based on backend response
+        router.push(data.redirectTo || "/user/home");
+      } catch (err) {
+        console.error(err);
+        setError(err.message || "Login failed. Please try again.");
+      }
+    };
 
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

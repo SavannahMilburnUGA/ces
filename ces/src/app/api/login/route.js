@@ -8,6 +8,13 @@ export async function POST(req) {
     await connectMongoDB();
     const { email, password } = await req.json();
 
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email and password are required." },
+        { status: 400 }
+      );
+    }
+
     // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
@@ -25,7 +32,7 @@ export async function POST(req) {
       );
     }
 
-    // If you ever add suspended flag
+    // handle suspended users if schema includes that
     if (user.suspended === true) {
       return NextResponse.json(
         { error: "This account has been suspended." },
@@ -42,13 +49,15 @@ export async function POST(req) {
       );
     }
 
-    // Successful login
+    // Success: login
+    // redirect users based on role (if you add roles later)
     return NextResponse.json({
       message: "Login successful.",
       user: {
         name: user.name,
         email: user.email,
-        customerId: user.customerId,
+        status: user.status,
+        customerId: user.customerId || null,
       },
     });
   } catch (error) {
