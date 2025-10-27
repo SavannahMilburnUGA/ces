@@ -33,8 +33,9 @@ export default function LoginPage() {
           localStorage.removeItem("rememberUser");
         }
     
-        // 🚀 Redirect based on backend response
+        //Redirect based on backend response
         router.push(data.redirectTo || "/user/home");
+        //router.push(data.redirectTo || "/register");
       } catch (err) {
         console.error(err);
         setError(err.message || "Login failed. Please try again.");
@@ -92,7 +93,7 @@ export default function LoginPage() {
   
             <p className="text-center text-sm">
               Don't have an account?{" "}
-              <a href="/signup" className="text-blue-600 hover:underline">
+              <a href="/register" className="text-blue-600 hover:underline">
                 Sign up
               </a>
             </p>
