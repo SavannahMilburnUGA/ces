@@ -3,8 +3,9 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import { connectDB } from "@/src/lib/mongodb";
-import User from "@/src/models/User";
+//import { connectDB } from "@/src/lib/mongodb";
+import User from "@/models/User";
+import connectMongoDB from "@/lib/mongodb";
 
 const Address = z.object({
   street: z.string().optional(),
