@@ -1,3 +1,4 @@
+// Add Movie page for Admin
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
