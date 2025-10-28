@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Card from "../components/Card";
 import Image from "next/image";
 
-export default function Home() {
+export default function AdminHome () {
     const router = useRouter();
 
     const adminOptions = [
@@ -65,4 +65,4 @@ export default function Home() {
             </div>
         </div>
     ); // return
-} // AdminHomePage
+} // AdminHome
