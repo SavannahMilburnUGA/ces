@@ -68,7 +68,7 @@ export default function ManageMovies() {
     
     // Handle editing/updating a movie
     const handleEdit = (movieId) => {
-        router.push(`/admin/update-movie/${movieId}`);
+        router.push(`/admin/update-movie?id=${movieId}`);
     }; // handleEdit 
 
     // Handle deleting a movie 
