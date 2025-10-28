@@ -114,7 +114,7 @@ export default function UpdateMovie() {
         <main className="min-h-dvh text-slate-100 flex items-start justify-center p-6" style={{ background: "var(--background)" }}>
             <section className="w-full max-w-4xl border rounded-2xl shadow-xl p-6 md:p-8" style={{ backgroundColor: "var(--dark2)", borderColor: "var(--dark-red)" }}>
                 <div className="flex justify-end mb-4">
-                    <button onClick={() => router.push("/admin/home")} className="px-4 py-2 rounded-lg transition" style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
+                    <button onClick={() => router.push("/admin")} className="px-4 py-2 rounded-lg transition" style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
                         >
