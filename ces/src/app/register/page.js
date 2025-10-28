@@ -1,16 +1,17 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // ✅ add
 
 export default function RegisterPage() {
+  const router = useRouter();               // ✅ add
+
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
     promoOptIn: false,
-    // Optional single home/shipping address on the user
     homeAddress: { street: "", city: "", state: "", zip: "" },
-    // Optional cards (max 3). billingAddress is a SINGLE-LINE STRING.
     cards: [
       {
         id: crypto.randomUUID?.() ?? String(Date.now()),
@@ -25,14 +26,9 @@ export default function RegisterPage() {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState({ type: "", text: "" });
 
-  // update top-level fields
-  const upd = (k, v) => setForm((p) => ({ ...p, [k]: v }));
-
-  // update nested object fields (e.g., homeAddress.street)
+  const upd  = (k, v) => setForm((p) => ({ ...p, [k]: v }));
   const upda = (scope, key, value) =>
     setForm((p) => ({ ...p, [scope]: { ...(p[scope] || {}), [key]: value } }));
-
-  // update a card field by index
   const updCard = (i, key, value) =>
     setForm((p) => {
       const cards = p.cards.slice();
@@ -40,7 +36,6 @@ export default function RegisterPage() {
       return { ...p, cards };
     });
 
-  // add/remove card rows (max 3)
   const addCard = () =>
     setForm((p) =>
       p.cards.length >= 3
@@ -69,7 +64,6 @@ export default function RegisterPage() {
     setMsg({ type: "", text: "" });
 
     try {
-      // Clean optional home address: only send if any field is filled
       const homeAddress =
         form.homeAddress && Object.values(form.homeAddress).some(Boolean)
           ? {
@@ -80,17 +74,14 @@ export default function RegisterPage() {
             }
           : undefined;
 
-      // Clean cards (<=3). Keep only non-empty rows.
       const cards = form.cards
         .map(({ cardType, cardNumber, expiration, billingAddress }) => {
           const card = {
             cardType: cardType?.trim(),
             cardNumber: cardNumber?.trim(),
             expiration: expiration?.trim(),
-            // billingAddress is a single-line string on the card
             billingAddress: billingAddress?.trim(),
           };
-          // include the card only if any main card fields present
           return card.cardType || card.cardNumber || card.expiration ? card : null;
         })
         .filter(Boolean);
@@ -101,8 +92,8 @@ export default function RegisterPage() {
         phone: form.phone,
         password: form.password,
         promoOptIn: form.promoOptIn,
-        homeAddress, // optional
-        cards, // optional array
+        homeAddress,
+        cards,
       };
 
       const res = await fetch("/api/auth/register", {
@@ -113,24 +104,12 @@ export default function RegisterPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed");
 
-      setMsg({
-        type: "success",
-        text: data.message || "Registered. Check your email to verify.",
-      });
+     
+      router.push(`/verification?email=${encodeURIComponent(form.email)}`);
+      return;
 
-      // Clear sensitive card inputs; keep homeAddress as-is
-      setForm((f) => ({
-        ...f,
-        cards: [
-          {
-            id: crypto.randomUUID?.() ?? String(Date.now()),
-            cardType: "",
-            cardNumber: "",
-            expiration: "",
-            billingAddress: "",
-          },
-        ],
-      }));
+     
+
     } catch (e) {
       setMsg({ type: "error", text: e.message || "Something went wrong" });
     } finally {
@@ -318,7 +297,6 @@ export default function RegisterPage() {
             </div>
           ))}
 
-          {/* Submit */}
           <div className="md:col-span-2 mt-2">
             <button
               className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50"
@@ -332,4 +310,3 @@ export default function RegisterPage() {
     </main>
   );
 }
-
