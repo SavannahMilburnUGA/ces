@@ -39,7 +39,7 @@ const NavBar = () => {
                 By Showtimes
               </Link>
                <Link 
-                href="/admin/addMovie" className="transition duration-200" style={{ color: '#D3D3D3' }}
+                href="/admin" className="transition duration-200" style={{ color: '#D3D3D3' }}
                 onMouseEnter={(e) => e.currentTarget.style.color = '#E5383B'}
                 onMouseLeave={(e) => e.currentTarget.style.color = '#D3D3D3'}
               >

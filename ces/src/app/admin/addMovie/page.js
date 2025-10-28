@@ -1,3 +1,4 @@
+// Add Movie page for Admin - contains Add Movie Form
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,11 +13,12 @@ export default function AdminAddMovie() {
     trailerUrl: "",
     genre: ""
   });
+  
   const router = useRouter();
 
   function update(key, value) {
     setForm(prev => ({ ...prev, [key]: value }));
-  }
+  } // update 
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -40,9 +42,20 @@ export default function AdminAddMovie() {
 
     return (
     <main className="min-h-dvh bg-white text-slate-100 flex items-start justify-center p-6">
+      
+
       <section className="w-full max-w-4xl bg-white border border-slate-800 rounded-2xl shadow-xl p-6 md:p-8">
       <div>
       <h1 className="text-2xl font-bold text-black">Add Movie</h1>
+      <div className="flex justify-end mb-4">
+  <button
+    onClick={() => router.push("/admin")}
+    className="px-4 py-2 rounded-lg transition"
+    style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
+  >
+    Admin Home
+  </button>
+</div>
       <section className="text-black">
       <form onSubmit={handleSubmit}>
          
@@ -109,16 +122,17 @@ export default function AdminAddMovie() {
            />
         </label>
         <br/><br/>
-
-        <button 
+        <div className="flex justify-center">
+          <button 
         className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
         type="submit">
           Add Movie
         </button>
+        </div>
       </form>
   </section>
     </div>
     </section> 
     </main> 
   );
-}
+} // AdminAddMovie 

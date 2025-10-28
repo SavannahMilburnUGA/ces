@@ -7,6 +7,8 @@ export async function POST(req) {
   try {
     await connectMongoDB();
     const { email, password } = await req.json();
+    // Adding admin login ? - commented out for now - change above to below ? 
+    // const { email, password, isAdmin } = await req.json();
 
     if (!email || !password) {
       return NextResponse.json(
@@ -49,6 +51,17 @@ export async function POST(req) {
       );
     }
 
+    // Adding admin login ? - commented out for now
+    // // Verify admin access
+    // if (isAdmin) {
+    //   if (user.role !== "admin") {
+    //     return(NextResponse.json(
+    //       { error: "Unauthorized: Admin access required." }, 
+    //       { status: 403 }
+    //     ); // return 
+    //   } // if
+    // } // if
+
     // Success: login
     // redirect users based on role (if you add roles later)
     return NextResponse.json({
@@ -57,6 +70,7 @@ export async function POST(req) {
         name: user.name,
         email: user.email,
         status: user.status,
+        // role: user.role, // For admin logic ?
         customerId: user.customerId || null,
       },
     });

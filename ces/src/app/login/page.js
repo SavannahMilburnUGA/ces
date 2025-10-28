@@ -8,7 +8,9 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [remember, setRemember] = useState("");
+    const [remember, setRemember] = useState(false);
+    // Handling state for admin
+    const [isAdmin, setIsAdmin] = useState(false); 
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -18,7 +20,7 @@ export default function LoginPage() {
         const res = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password, isAdmin }),
         });
     
         const data = await res.json();
@@ -33,9 +35,12 @@ export default function LoginPage() {
           localStorage.removeItem("rememberUser");
         }
     
-        //Redirect based on backend response
-        router.push(data.redirectTo || "/user/home");
-        //router.push(data.redirectTo || "/register");
+        // Route to proper home page based on user or admin status
+        if (isAdmin) {
+          router.push("/admin")
+        } else {
+          router.push(data.redirectTo || "/user/home");
+        } // if
       } catch (err) {
         console.error(err);
         setError(err.message || "Login failed. Please try again.");
@@ -77,6 +82,15 @@ export default function LoginPage() {
                 />
                 Remember me
               </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={isAdmin}
+                  onChange={(e) => setIsAdmin(e.target.checked)}
+                  className = "w-4 h-4" style = {{ accentColor: '#A4161A' }}
+                />
+                <span className="font-semibold" style={{ color: '#A4161A' }}> Admin </span>
+              </label>
               <a href="/forgot-password" className="text-blue-600 hover:underline">
                 Forgot password?
               </a>
@@ -94,7 +108,7 @@ export default function LoginPage() {
             <p className="text-center text-sm">
               Don't have an account?{" "}
               <a href="/register" className="text-blue-600 hover:underline">
-                Register
+                Sign up
               </a>
             </p>
           </form>

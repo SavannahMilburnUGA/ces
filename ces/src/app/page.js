@@ -77,6 +77,15 @@ export default function Home() {
 
   const { current, comingSoon } = runOrSoon();
 
+  // Display loading message while waiting for movies to render & load 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl" style={{ color: '#FFFFFF' }}>Loading movies...</p>
+      </div>
+    ); // return
+  } // if 
+
   return( 
     <div className= "min-h-screen">
         <SearchBar onSearch={handleSearch} onGenreFilter={handleGenre} genres={genres} />
