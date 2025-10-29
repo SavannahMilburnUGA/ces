@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // Admin state variable
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
   //Check login state (cookie + localStorage) and react to storage changes
@@ -16,6 +18,15 @@ const NavBar = () => {
         .some((row) => row.startsWith("userSession="));
       const hasLocalFlag = localStorage.getItem("isLoggedIn") === "true";
       setIsLoggedIn(hasCookie || hasLocalFlag);
+
+      // Check if user has admin role
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        setIsAdmin(user.role === "admin");
+      } else {
+        setIsAdmin(false); 
+      } // if 
     };
   
     checkLogin(); // initial check
@@ -37,6 +48,7 @@ const NavBar = () => {
     try {
       await fetch("/api/logout", { method: "POST" });
       localStorage.removeItem("isLoggedIn"); // clear local flag
+      localStorage.removeItem("user"); // clear admin vs. user data 
       setIsLoggedIn(false);
       router.push("/"); // redirect home
     } catch (err) {
@@ -94,7 +106,8 @@ const NavBar = () => {
               >
                 By Showtimes
               </Link>
-              <Link
+              {isLoggedIn && isAdmin && (
+                <Link
                 href="/admin"
                 className="transition duration-200"
                 style={{ color: "#D3D3D3" }}
@@ -103,6 +116,8 @@ const NavBar = () => {
               >
                 Admin
               </Link>
+              )}
+              
 
               {/* Conditional login/logout */}
               {isLoggedIn ? (

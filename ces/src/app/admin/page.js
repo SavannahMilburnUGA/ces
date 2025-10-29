@@ -3,9 +3,31 @@
 import { useRouter } from "next/navigation";
 import Card from "../components/Card";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function AdminHome () {
     const router = useRouter();
+
+    // Protecting this route so only admin can view
+    useEffect(() => {
+        // Check if user is logged in and is admin
+        const userStr = localStorage.getItem("user");
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+        if (!isLoggedIn || !userStr) {
+            router.push("/login");
+            return;
+        } // if - user is not even logged in
+
+        const user = JSON.parse(userStr);
+        // Check if logged in user has admin role
+        if (user.role !== "admin") {
+            alert("Access denied. Admin privileges required.");
+            router.push("/");
+            return;
+        } // if - user is logged in but does NOT have admin role
+
+    }, [router]); // useEffect for checking admin role 
 
     const adminOptions = [
         { 
