@@ -34,21 +34,20 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || "Login failed.");
-      }
+      if (!res.ok) throw new Error(data.error || "Login failed.");
 
       // Store remembered email
-      if (remember) {
-        localStorage.setItem("rememberUser", email);
-      } else {
-        localStorage.removeItem("rememberUser");
-      }
+      if (remember) localStorage.setItem("rememberUser", email);
+      else localStorage.removeItem("rememberUser");
 
-      // Redirect based on potential future role
-      // For now, just go to user home
+      // Mark user as logged in
       if (data.user?.status === "Active") {
-        router.push("/");
+        localStorage.setItem("isLoggedIn", "true");
+
+        // Dispatch custom event so Navbar reacts immediately
+        window.dispatchEvent(new Event("loginStatusChanged"));
+
+        router.push("/"); // navigate after setting login flag
       } else if (data.user?.status === "Inactive") {
         setError("Please verify your email before logging in.");
       } else {
@@ -102,9 +101,7 @@ export default function LoginPage() {
             </a>
           </div>
 
-          {error && (
-            <p className="text-red-500 text-sm text-center mt-2">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
 
           <button
             type="submit"
@@ -115,7 +112,7 @@ export default function LoginPage() {
           </button>
 
           <p className="text-center text-sm mt-3">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <a href="/signup" className="text-blue-600 hover:underline">
               Sign up
             </a>
