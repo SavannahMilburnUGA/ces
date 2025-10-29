@@ -42,12 +42,24 @@ export default function LoginPage() {
 
       // Mark user as logged in
       if (data.user?.status === "Active") {
+        // Storing full user data for user vs. admin role
+        localStorage.setItem("user", JSON.stringify({
+          name: data.user.name, 
+          email: data.user.email, 
+          role: data.user.role
+        })); // localStorage for role
         localStorage.setItem("isLoggedIn", "true");
 
         // Dispatch custom event so Navbar reacts immediately
         window.dispatchEvent(new Event("loginStatusChanged"));
 
-        router.push("/"); // navigate after setting login flag
+        // Route based on user vs. admin role 
+        if (data.user.role === "admin") {
+          router.push("/admin")
+        } else {
+          router.push("/"); // navigate after setting login flag
+        } // if 
+
       } else if (data.user?.status === "Inactive") {
         setError("Please verify your email before logging in.");
       } else {

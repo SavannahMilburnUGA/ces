@@ -27,6 +27,11 @@ const UserSchema = new mongoose.Schema(
     promoOptIn:   { type: Boolean, default: false },
     status:       { type: String, enum: ["Inactive", "Active"], default: "Inactive" },
 
+    // Handling user vs. admin role
+    role: { type: String, enum: ["user", "admin"], default: "user"}, 
+    // Handle suspended accounts
+    suspended:  { type: Boolean, default:false }, 
+
     // Optional single home/shipping address
     homeAddress:  { type: AddressSchema, required: false },
 
