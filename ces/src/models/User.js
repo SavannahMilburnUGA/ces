@@ -15,14 +15,21 @@ const UserSchema = new mongoose.Schema({
   passwordHash:{ type:String, required:true },
   promoOptIn:{ type:Boolean, default:false },
   status:{ type:String, enum:["Inactive","Active"], default:"Active" },
-
+  role:      { type: String, enum: ["user", "admin"], default: "user" },
+  suspended: { type: Boolean, default: false },
   homeAddress: { type: AddressSchema, required:false },
   payments: {
     type:[PaymentSchema],
     validate:{ validator:arr=>!arr || arr.length<=3, message:"At most 3 payment cards" },
     default: undefined
   },
+  confirmationToken:    { type: String, index: true },
+  confirmationCodeHash: { type: String },
+  confirmationExpires:  { type: Date },
 
+  customerId: { type: String, unique: true, sparse: true },
+
+  lastProfileUpdate: { type: Date, default: null },
   // Password reset (link only)
   resetPasswordTokenHash: { type:String, index:true, sparse:true },
   resetPasswordExpires:   { type:Date },
