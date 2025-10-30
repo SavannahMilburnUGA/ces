@@ -30,7 +30,6 @@ export async function POST(req) {
       return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
     }
 
-    // ✅ Create response with cookie
     const response = NextResponse.json({
       message: "Login successful.",
       user: {
@@ -43,7 +42,11 @@ export async function POST(req) {
 
     response.cookies.set(
       "userSession",
-      JSON.stringify({ name: user.name, email: user.email }),
+      JSON.stringify({
+        _id: user._id,       
+        name: user.name,
+        email: user.email,
+      }),
       {
         httpOnly: true,
         path: "/",
@@ -53,7 +56,7 @@ export async function POST(req) {
       }
     );
 
-    return response; // ✅ return this response so cookie is sent
+    return response; 
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json({ error: "Internal server error." }, { status: 500 });

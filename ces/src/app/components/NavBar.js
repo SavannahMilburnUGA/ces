@@ -17,15 +17,15 @@ const NavBar = () => {
       const hasLocalFlag = localStorage.getItem("isLoggedIn") === "true";
       setIsLoggedIn(hasCookie || hasLocalFlag);
     };
-  
+
     checkLogin(); // initial check
-  
+
     //Listen to storage changes from other tabs
     window.addEventListener("storage", checkLogin);
-  
+
     // ✅ Also listen for custom event in current tab
     window.addEventListener("loginStatusChanged", checkLogin);
-  
+
     return () => {
       window.removeEventListener("storage", checkLogin);
       window.removeEventListener("loginStatusChanged", checkLogin);
@@ -103,6 +103,16 @@ const NavBar = () => {
               >
                 Admin
               </Link>
+
+              {/* ✅ Show Profile button if logged in */}
+              {isLoggedIn && (
+                <Link
+                  href="/edit-profile"
+                  className="transition duration-200 border border-[#E5383B] px-4 py-1 rounded-md text-[#E5383B] hover:bg-[#E5383B] hover:text-white"
+                >
+                  Profile
+                </Link>
+              )}
 
               {/* Conditional login/logout */}
               {isLoggedIn ? (

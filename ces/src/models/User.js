@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema(
     confirmationExpires:  { type: Date },
 
     customerId: { type: String, unique: true, sparse: true },
+
+    //edit profile tracking
+    lastProfileUpdate: { type: Date, default: null },
+
   },
   { timestamps: true }
 );
