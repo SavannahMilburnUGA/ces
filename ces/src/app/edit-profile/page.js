@@ -14,7 +14,7 @@ export default function EditProfilePage() {
   });
 
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  //const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Fetch user data
@@ -85,8 +85,8 @@ export default function EditProfilePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setMessage("");
+    //setError("");
+    setMessage("Change successful!");
     setLoading(true);
   
     try {
@@ -251,9 +251,9 @@ export default function EditProfilePage() {
             value={form.newPassword}
             onChange={handleChange}
           />
-
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          {message && <p className="text-green-600 text-center">{message}</p>}
+          
+          {message && <p className="text-green-600 text-center mt-2">{message}</p>}
+          
 
           <button
             type="submit"
