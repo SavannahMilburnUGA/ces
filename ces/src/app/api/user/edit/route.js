@@ -4,7 +4,7 @@ import connectMongoDB from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
-import sendEmail from "@/lib/email"; // your email util
+import { sendEmail } from "@/lib/email";
 
 export async function PUT(req) {
   await connectMongoDB();
@@ -13,8 +13,11 @@ export async function PUT(req) {
   const session = cookieStore.get("userSession");
   if (!session) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
+  //Parse userId from session (make sure your login route sets _id in cookie)
+  const { _id: userId } = JSON.parse(session.value);
+  if (!userId) return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+
   const updates = await req.json();
-  const userId = JSON.parse(session.value)._id; // assuming session stores {_id, name, email}
 
   const user = await User.findById(userId);
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -33,7 +36,7 @@ export async function PUT(req) {
     changed = true;
   }
 
-  // Update address (only one allowed)
+  // Update address
   if (updates.homeAddress) {
     user.homeAddress = updates.homeAddress;
     changed = true;
@@ -64,13 +67,18 @@ export async function PUT(req) {
   if (changed) user.lastProfileUpdate = new Date();
   await user.save();
 
-  // Send email if profile changed
+  //Send email if profile changed
   if (changed) {
-    sendEmail({
-      to: user.email,
-      subject: "Profile Updated",
-      text: "Your profile information has been updated successfully.",
-    });
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Profile Updated",
+        text: `Hi ${user.name},\n\nYour profile information has been updated successfully.`,
+      });
+      console.log("Profile update email sent successfully to", user.email);
+    } catch (err) {
+      console.error("Profile update email failed:", err);
+    }
   }
 
   return NextResponse.json({ message: "Profile updated successfully." });
