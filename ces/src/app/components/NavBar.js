@@ -34,7 +34,7 @@ const NavBar = () => {
     //Listen to storage changes from other tabs
     window.addEventListener("storage", checkLogin);
 
-    // ✅ Also listen for custom event in current tab
+    //Also listen for custom event in current tab
     window.addEventListener("loginStatusChanged", checkLogin);
 
     return () => {
@@ -43,7 +43,7 @@ const NavBar = () => {
     };
   }, []);
 
-  // ✅ Handle logout
+  //Handle logout
   const handleLogout = async () => {
     try {
       await fetch("/api/logout", { method: "POST" });
@@ -119,7 +119,7 @@ const NavBar = () => {
               )}
               
 
-              {/* ✅ Show Profile button if logged in */}
+              {/*Show Profile button if logged in */}
               {isLoggedIn && (
                 <Link
                   href="/edit-profile"
