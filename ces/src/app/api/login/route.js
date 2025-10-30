@@ -36,17 +36,14 @@ export async function POST(req) {
         name: user.name,
         email: user.email,
         status: user.status,
+        role: user.role, 
         customerId: user.customerId || null,
       },
     });
 
     response.cookies.set(
       "userSession",
-      JSON.stringify({
-        _id: user._id,       
-        name: user.name,
-        email: user.email,
-      }),
+      JSON.stringify({ name: user.name, email: user.email, role: user.role}),
       {
         httpOnly: true,
         path: "/",
