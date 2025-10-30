@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ add
+import { useRouter } from "next/navigation"; 
 
 export default function RegisterPage() {
-  const router = useRouter();               // ✅ add
+  const router = useRouter();               
 
   const [form, setForm] = useState({
     name: "",
