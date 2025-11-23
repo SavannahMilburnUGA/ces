@@ -36,14 +36,14 @@ export default function AdminHome () {
         route: "/admin/manage-movies" 
         },
         { 
-        icon: "/user.svg", 
-        label: "Manage Users", 
-        route: "/admin/manage-users" 
+        icon: "/showtimes.svg", 
+        label: "Manage Showtimes", 
+        route: "/admin/manage-showtimes" 
         },
         { 
         icon: "/admin.svg", 
-        label: "Manage Admin", 
-        route: "/admin/manage-admin" 
+        label: "Manage Users/Admin", 
+        route: "/admin/manage-users-admin" 
         },
         { 
         icon: "/reports.svg", 
@@ -52,8 +52,8 @@ export default function AdminHome () {
         },
         { 
         icon: "/price.svg", 
-        label: "Manage Pricing", 
-        route: "/admin/manage-pricing" 
+        label: "Manage Promos", 
+        route: "/admin/manage-promos" 
         },
     ]; // adminOptions
 
