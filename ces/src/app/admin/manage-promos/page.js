@@ -244,9 +244,9 @@ export default function ManagePromos() {
                                                 >
                                                 Delete
                                             </button>
-                                            <button onClick={() => handleSendEmail(promo)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--dark-gray)", color: "var(--off-white)" }}
-                                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
-                                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
+                                            <button onClick={() => handleSendEmail(promo)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--dark-red)", color: "var(--off-white)" }}
+                                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
+                                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-red)")}
                                                 >
                                                 Send Email
                                             </button>

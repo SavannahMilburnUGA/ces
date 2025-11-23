@@ -162,7 +162,7 @@ export default function UpdatePromo() {
                 <div className="flex justify-end mb-4">
                     <button onClick={() => router.push("/admin")} className="px-4 py-2 rounded-lg transition" style={{ backgroundColor: "var(--dark-red)", color: "var(--off-white)" }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-red)")}
                         >
                             Admin Home
                     </button>

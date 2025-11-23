@@ -96,8 +96,8 @@ export default function AdminAddPromo() {
                     <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--off-white)" }}>Add Promo</h1>
                     <div className="flex justify-end mb-4">
                     <button onClick={() => router.push("/admin")} className="px-4 py-2 rounded-lg transition" style={{ backgroundColor: "var(--dark-red)", color: "var(--off-white)" }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-red)")}
                         >
                         Admin Home
                     </button>
@@ -184,9 +184,9 @@ export default function AdminAddPromo() {
                                 type="button"
                                 onClick={() => router.push("/admin/manage-promos")}
                                 className="px-6 py-2 rounded transition" 
-                                style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
-                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
-                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
+                                style={{ backgroundColor: "var(--red)", color: "var(--off-white)" }}
+                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-red)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--red)")}
                             >
                                 Cancel
                             </button>
