@@ -157,7 +157,7 @@ export default function ScheduleMoviePage() {
               (e.currentTarget.style.backgroundColor = "var(--dark-gray)")
             }
           >
-            Admin Home
+            Go Back
           </button>
         </div>
 
