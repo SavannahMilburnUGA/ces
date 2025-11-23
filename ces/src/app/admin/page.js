@@ -32,18 +32,13 @@ export default function AdminHome () {
     const adminOptions = [
         { 
         icon: "/film.svg", 
-        label: "Manage Movie Info", 
+        label: "Manage Movies", 
         route: "/admin/manage-movies" 
         },
         { 
-        icon: "/user.svg", 
-        label: "Manage Users", 
-        route: "/admin/manage-users" 
-        },
-        { 
         icon: "/admin.svg", 
-        label: "Manage Admin", 
-        route: "/admin/manage-admin" 
+        label: "Manage Users/Admin", 
+        route: "/admin/manage-users-admin" 
         },
         { 
         icon: "/reports.svg", 
@@ -52,8 +47,8 @@ export default function AdminHome () {
         },
         { 
         icon: "/price.svg", 
-        label: "Manage Pricing", 
-        route: "/admin/manage-pricing" 
+        label: "Manage Promos", 
+        route: "/admin/manage-promos" 
         },
     ]; // adminOptions
 
@@ -63,8 +58,8 @@ export default function AdminHome () {
                 <h1 className="text-4xl font-bold mb-8 text-center" style={{ color: 'var(--off-white)' }}>
                     Admin Dashboard
                 </h1>
-                <div className="grid grid-cols-3 gap-6 mb-6">
-                    {adminOptions.slice(0, 3).map((option, index) => (
+                <div className="grid grid-cols-2 gap-6 mb-6">
+                    {adminOptions.slice(0, 2).map((option, index) => (
                         <Card key={index} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push(option.route)}>
                             <div className="flex flex-col items-center justify-center p-6">
                                 <Image src={option.icon} alt={option.label} width={80} height={80} className="mb-4"/>
@@ -75,7 +70,7 @@ export default function AdminHome () {
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
-                    {adminOptions.slice(3, 5).map((option, index) => (
+                    {adminOptions.slice(2, 4).map((option, index) => (
                         <Card key={index} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push(option.route)}>
                             <div className="flex flex-col items-center justify-center p-6">
                                 <Image src={option.icon} alt={option.label} width={80} height={80} className="mb-4"/>
