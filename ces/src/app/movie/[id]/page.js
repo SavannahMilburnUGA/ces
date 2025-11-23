@@ -71,20 +71,46 @@ function toYouTubeEmbed(url) {
             <p>{movie.description}</p>
 
             {/* Showtimes as simple buttons */}
-            <div className="mt-4">
-              <p className="font-medium mb-2">Showtimes:</p>
-              <div className="flex flex-wrap gap-2">
-                {movie.showtimes.map((time, index) => (
-                  <button
-                    key={index}
-                    onClick={handleBookingClick} // now all buttons just go to /booking
-                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
-            </div>
+<div className="mt-4">
+  <p className="font-medium mb-2">Showtimes:</p>
+
+  <div className="flex flex-wrap gap-2">
+    {movie.showtimes && movie.showtimes.length > 0 ? (
+      movie.showtimes.map((st, index) => {
+        const showroom = st.showroom || "Showroom";
+        const dt = st.dateTime ? new Date(st.dateTime) : null;
+
+        const date = dt
+          ? dt.toLocaleDateString([], {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
+          : "Date TBA";
+
+        const time = dt
+          ? dt.toLocaleTimeString([], {
+              hour: "numeric",
+              minute: "2-digit",
+            })
+          : "Time TBA";
+
+        return (
+          <button
+            key={index}
+            onClick={handleBookingClick}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+          >
+            {`${showroom} – ${date} ${time}`}
+          </button>
+        );
+      })
+    ) : (
+      <p className="text-sm text-gray-500">No showtimes available.</p>
+    )}
+  </div>
+</div>
+
           </div>
           {/* Trailer Right */}
           <div className="md:w-3/8 w-full h-64 md:h-96">

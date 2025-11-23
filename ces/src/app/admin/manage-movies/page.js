@@ -157,6 +157,18 @@ export default function ManageMovies() {
                                     </button>
                                 </td>
                                 <td className="p-4 text-center">
+                                    <button
+                                        onClick={() => router.push(`/admin/schedule-movie?id=${movie._id}`)}
+                                        className="px-4 py-2 rounded transition"
+                                        style={{ backgroundColor: "var(--light-red)", color: "var(--off-white)" }}
+                                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--pastel-red)")}
+                                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
+                                    >
+                                        Schedule
+                                    </button>
+                                    </td>
+
+                                <td className="p-4 text-center">
                                 <button onClick={() => handleDelete(movie)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--dark-red)", color: "var(--off-white)" }}
                                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--red)")}
                                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-red)")}
