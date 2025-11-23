@@ -9,7 +9,7 @@ import { sendEmail } from "@/lib/email";
 export async function PUT(req) {
   await connectMongoDB();
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const session = cookieStore.get("userSession");
   if (!session) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 

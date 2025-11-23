@@ -143,7 +143,7 @@ export default function ManagePromos() {
             setSendPromo(null);
 
             // Refresh promos to show updated sentCount
-            const refreshRes = await fetch("api/promos");
+            const refreshRes = await fetch(`${window.location.origin}/api/promos`);
             const refreshData = await refreshRes.json();
             const arr = Array.isArray(refreshData) ? refreshData : Array.isArray(refreshData?.promos) ? refreshData.promos : [];
             setAllPromos(arr);
