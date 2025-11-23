@@ -1,4 +1,4 @@
-// page.js: Exports Home page component of CES website
+
 "use client";
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
@@ -33,11 +33,18 @@ export default function Home() {
         const res = await fetch(url);
         const data = await res.json();
        
-         const arr = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.movies) ? data.movies : [];
+      let arr = [];
 
-      if (alive) setAllMovies(arr);
+    if (Array.isArray(data)) {
+      arr = data;
+    } else if (Array.isArray(data?.movies)) {
+      arr = data.movies;
+    } else if (typeof data === "object" && data !== null) {
+   
+      arr = Object.values(data);
+    }
+
+    if (alive) setAllMovies(arr);
       } catch (error) {
         if (alive) setError(error.message || 'Failed to fetch movies:');
       } finally {
