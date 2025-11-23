@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema({
   customerId: { type: String, unique: true, sparse: true },
 
   lastProfileUpdate: { type: Date, default: null },
+  
   // Password reset (link only)
   resetPasswordTokenHash: { type:String, index:true, sparse:true },
   resetPasswordExpires:   { type:Date },
