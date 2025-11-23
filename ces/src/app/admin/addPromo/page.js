@@ -91,11 +91,11 @@ export default function AdminAddPromo() {
 
     return(
         <main className="min-h-dvh text-slate-100 flex items-start justify-center p-6" style={{ background: "var(--background)" }}>
-            <section className="w-full max-w-4xl border rounded-2xl shadow-xl p-6 md:p-8" style={{ backgroundColor: "var(--dark2)", borderColor: "var(--dark-red)" }}>
+            <section className="w-full max-w-4xl border rounded-2xl shadow-xl p-6 md:p-8" style={{ backgroundColor: "var(--dark2)", borderColor: "var(--dark-gray)" }}>
                 <div>
                     <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--off-white)" }}>Add Promo</h1>
                     <div className="flex justify-end mb-4">
-                    <button onClick={() => router.push("/admin")} className="px-4 py-2 rounded-lg transition" style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
+                    <button onClick={() => router.push("/admin")} className="px-4 py-2 rounded-lg transition" style={{ backgroundColor: "var(--dark-red)", color: "var(--off-white)" }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
                         >
@@ -192,9 +192,9 @@ export default function AdminAddPromo() {
                             </button>
                             <button 
                                 className="px-6 py-2 rounded transition"
-                                style={{ backgroundColor: "var(--red)", color: "var(--off-white)" }}
-                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
-                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--red)")}
+                                style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
+                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
                                 type="submit"
                             >
                                 Add Promo

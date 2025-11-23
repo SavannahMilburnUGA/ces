@@ -182,9 +182,9 @@ export default function ManagePromos() {
                         Manage Promos
                     </h1>
                     <button onClick={() => router.push("/admin/addPromo")} className="px-8 py-4 rounded-lg font-semibold transition text-lg"
-                        style={{ backgroundColor: "var(--red)", color: "var(--off-white)" }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--red)")}
+                        style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
                         >
                             Add Promo
                     </button>
@@ -215,7 +215,7 @@ export default function ManagePromos() {
                         <tbody>
                             {filteredPromos.map((promo) => (
                                 <tr key={promo._id} style={{ borderBottom: "1px solid var(--dark-gray)" }} className="hover:bg-opacity-10"
-                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(161, 22, 26, 0.1)")}
+                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(177, 167, 166, 0.1)")}
                                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                                 >
                                     <td className="p-4" style={{ color: "var(--off-white)" }}>
@@ -232,21 +232,21 @@ export default function ManagePromos() {
                                     </td>
                                     <td className="p-4 text-center">
                                         <div className="flex gap-2 justify-center">
-                                            <button onClick={() => handleEdit(promo._id)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--light-red)", color: "var(--off-white)" }}
-                                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--pastel-red)")}
-                                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
+                                            <button onClick={() => handleEdit(promo._id)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--light-gray)", color: "var(--darkest)" }}
+                                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
+                                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
                                             >
                                             Edit
                                             </button>
-                                            <button onClick={() => handleDelete(promo)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--dark-red)", color: "var(--off-white)" }}
-                                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--red)")}
-                                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-red)")}
+                                            <button onClick={() => handleDelete(promo)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--dark-gray)", color: "var(--darkest)" }}
+                                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
+                                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
                                                 >
                                                 Delete
                                             </button>
-                                            <button onClick={() => handleSendEmail(promo)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--red)", color: "var(--off-white)" }}
-                                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
-                                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--red)")}
+                                            <button onClick={() => handleSendEmail(promo)} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--dark-gray)", color: "var(--off-white)" }}
+                                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-gray)")}
+                                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark-gray)")}
                                                 >
                                                 Send Email
                                             </button>
@@ -277,9 +277,9 @@ export default function ManagePromos() {
                                     >
                                         Cancel
                                 </button>
-                                <button onClick={confirmDelete} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--red)", color: "var(--off-white)" }}
-                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--light-red)")}
-                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--red)")}
+                                <button onClick={confirmDelete} className="px-4 py-2 rounded transition" style={{ backgroundColor: "var(--dark2)", color: "var(--off-white)" }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--darkest)")}
+                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--dark2)")}
                                     >
                                         Delete
                                 </button>
