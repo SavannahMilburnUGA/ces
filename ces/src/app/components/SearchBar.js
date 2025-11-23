@@ -1,7 +1,7 @@
 // SearchBar.js: Exports Search Bar component to search for movies by title & includes filtering movies by genre
 import { useState, useEffect } from 'react';
 
-const SearchBar = ({ onSearch, onGenreFilter, genres = [], showGenreFilter = true, showTitle = true }) => {
+const SearchBar = ({ onSearch, onGenreFilter, genres = [], showGenreFilter = true, showTitle = true, placeholder = "Search movies..." }) => {
     // Use React use state for searching & filtering 
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGenre, setSelectedGenre] = useState('');
@@ -40,7 +40,7 @@ const SearchBar = ({ onSearch, onGenreFilter, genres = [], showGenreFilter = tru
                 )}
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="relative">
-                    <input type="text"placeholder="Search movies..."value={searchTerm} onChange={handleSearch} className="w-full sm:w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent placeholder:text-[#B1A7A6]"
+                    <input type="text"placeholder={placeholder} value={searchTerm} onChange={handleSearch} className="w-full sm:w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent placeholder:text-[#B1A7A6]"
                     style={{ backgroundColor: '#161A1D', color: '#F5F3F4', borderColor: '#B1A7A6' }}
                     onFocus={(e) => e.currentTarget.style.borderColor = '#E5383B'}
                     onBlur={(e) => e.currentTarget.style.borderColor = '#B1A7A6'}
