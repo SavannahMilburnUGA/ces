@@ -39,7 +39,7 @@ export default function ManagePromos() {
             try {
                 setLoading(true);
                 setError("");
-                const res = await fetch("/api/promos");
+                const res = await fetch(`${window.location.origin}/api/promos`);
                 const data = await res.json();
 
                 const arr = Array.isArray(data)
@@ -127,7 +127,7 @@ export default function ManagePromos() {
     const confirmSendEmail = async () => {
         try {
             setSendingEmail(true);
-            const res = await fetch("api/promos/send-email", {
+            const res = await fetch(`${window.location.origin}/api/promos/send-email`, {
                 method: "POST", 
                 headers: { "Content-Type": "application/json" }, 
                 body: JSON.stringify({ promoId: sendPromo._id }), 
