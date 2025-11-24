@@ -15,7 +15,10 @@ export default function BookingPage() {
   const [ticketTypes, setTicketTypes] = useState([]);
   const [promoCode, setPromoCode] = useState("");
   const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
+  const [bookedSeats, setBookedSeats] = useState([]);
 
+  // Fetch movie info
   useEffect(() => {
     if (!movieId) return;
     async function fetchMovie() {
@@ -30,6 +33,42 @@ export default function BookingPage() {
     }
     fetchMovie();
   }, [movieId]);
+
+  // Fetch logged-in user
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/user/me");
+        if (!res.ok) return setUser(null);
+        const data = await res.json();
+        setUser(data || null);
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+        setUser(null);
+      }
+    }
+    fetchUser();
+  }, []);
+
+  // Fetch booked seats
+  useEffect(() => {
+    if (!movieId || !showtime || !showroom) return;
+
+    async function fetchBookedSeats() {
+      try {
+        const res = await fetch(
+          `/api/bookings?movieId=${movieId}&showtime=${encodeURIComponent(
+            showtime
+          )}&showroom=${showroom}`
+        );
+        const data = await res.json();
+        if (data?.bookedSeats) setBookedSeats(data.bookedSeats);
+      } catch (err) {
+        console.error("Failed to fetch booked seats:", err);
+      }
+    }
+    fetchBookedSeats();
+  }, [movieId, showtime, showroom]);
 
   const posterUrl = movie?.posterUrl || "/placeholder-poster.jpg";
 
@@ -65,27 +104,32 @@ export default function BookingPage() {
     setTicketTypes(newTypes);
   };
 
-  // Updated handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      setError("You must be logged in to submit a booking.");
+      return;
+    }
     if (selectedSeats.length === 0) {
       setError("Please select at least one seat.");
       return;
     }
-
     if (ticketTypes.length !== selectedSeats.length) {
       setError("Please select ticket type for all seats.");
       return;
     }
 
     const bookingData = {
-      movie: movie?.title,
+      movieId,
+      movieTitle: movie?.title,
       showtime,
       showroom,
       seats: selectedSeats,
       ticketTypes,
       promoCode,
+      userEmail: user.email,
+      userName: user.name,
     };
 
     try {
@@ -100,9 +144,17 @@ export default function BookingPage() {
         throw new Error(errorData?.error || "Booking failed");
       }
 
-      // Redirect to success page with booking info
+      // Redirect to success page
       router.push(
-        `/booking-success?movie=${encodeURIComponent(movie.title)}&showtime=${encodeURIComponent(showtime)}&showroom=${encodeURIComponent(showroom)}&seats=${encodeURIComponent(selectedSeats.join(","))}&ticketTypes=${encodeURIComponent(ticketTypes.join(","))}`
+        `/booking-success?movie=${encodeURIComponent(
+          movie.title
+        )}&showtime=${encodeURIComponent(
+          showtime
+        )}&showroom=${encodeURIComponent(
+          showroom
+        )}&seats=${encodeURIComponent(
+          selectedSeats.join(",")
+        )}&ticketTypes=${encodeURIComponent(ticketTypes.join(","))}`
       );
     } catch (err) {
       console.error("Booking failed:", err);
@@ -141,20 +193,26 @@ export default function BookingPage() {
           <div>
             <p className="font-medium mb-2">Select Seats:</p>
             <div className="grid grid-cols-7 gap-2">
-              {seatNumbers.map((seat) => (
-                <button
-                  key={seat}
-                  type="button"
-                  className={`px-3 py-2 rounded ${
-                    selectedSeats.includes(seat)
-                      ? "bg-green-600 text-white"
-                      : "bg-gray-200 hover:bg-gray-300"
-                  }`}
-                  onClick={() => handleSeatToggle(seat)}
-                >
-                  {seat}
-                </button>
-              ))}
+              {seatNumbers.map((seat) => {
+                const isBooked = bookedSeats.includes(seat);
+                return (
+                  <button
+                    key={seat}
+                    type="button"
+                    disabled={isBooked}
+                    className={`px-3 py-2 rounded ${
+                      selectedSeats.includes(seat)
+                        ? "bg-green-600 text-white"
+                        : isBooked
+                        ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                        : "bg-gray-200 hover:bg-gray-300"
+                    }`}
+                    onClick={() => handleSeatToggle(seat)}
+                  >
+                    {seat}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -190,13 +248,24 @@ export default function BookingPage() {
             />
           </label>
 
+          {!user && (
+            <p className="text-yellow-600 text-sm mb-2">
+              Please log in to book tickets.
+            </p>
+          )}
+
           {error && <p className="text-red-600 font-semibold">{error}</p>}
 
           <button
             type="submit"
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+            disabled={!user}
+            className={`px-4 py-2 rounded text-white transition ${
+              user
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
-            Confirm Booking
+            {user ? "Confirm Booking" : "Log in to book"}
           </button>
         </form>
 
