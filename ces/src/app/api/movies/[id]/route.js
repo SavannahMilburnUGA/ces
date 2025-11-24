@@ -3,56 +3,56 @@ import { connectDB } from "@/lib/mongodb";
 import Movie from "@/models/Movie";
 import mongoose from "mongoose";
 
-export async function GET(req, { params }) {
-  await connectDB();
+//export async function GET(req, { params }) {
+export async function GET(req, context) {
+  const { params } = context
+  const id = params?.id;
 
-  const id = params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid movie ID" }, { status: 400 });
   }
+
+  await connectDB();
 
   try {
     const movie = await Movie.findById(id);
     if (!movie) {
       return NextResponse.json({ error: "Movie not found" }, { status: 404 });
     }
-
     return NextResponse.json(movie);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-// Delete
+// DELETE
 export async function DELETE(req, { params }) {
   await connectDB();
-  
-  const { id } = await params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  const id = params?.id;
+
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid movie ID" }, { status: 400 });
-  } // if 
+  }
 
   try {
     const movie = await Movie.findByIdAndDelete(id);
     if (!movie) {
       return NextResponse.json({ error: "Movie not found" }, { status: 404 });
-    } // if 
-
+    }
     return NextResponse.json({ message: "Movie deleted successfully" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
-  } // try-catch 
-} // DELETE 
+  }
+}
 
-// Put for edit 
+// PUT
 export async function PUT(req, { params }) {
   await connectDB();
 
-  const { id } = await params;
+  const id = params?.id;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid movie ID" }, { status: 400 });
   }
 
@@ -60,12 +60,8 @@ export async function PUT(req, { params }) {
     const body = await req.json();
     const { title, posterUrl, rating, description, showDate, trailerUrl, genre } = body;
 
-    // Validate required fields
     if (!title || !posterUrl || !description || !showDate || !trailerUrl || !genre) {
-      return NextResponse.json(
-        { error: "All required fields must be provided" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "All required fields must be provided" }, { status: 400 });
     }
 
     const updatedMovie = await Movie.findByIdAndUpdate(
@@ -82,4 +78,4 @@ export async function PUT(req, { params }) {
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-} // PUT 
+}

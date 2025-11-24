@@ -34,10 +34,11 @@ export default function MovieDetails() {
   if (!movie) return <div>Movie not found</div>;
 
   // Simple click: just go to booking page
-  const handleBookingClick = (showtimeLabel) => {
-    const encodeMovie = encodeURIComponent(movie.title);
-    const encodeShowtime = encodeURIComponent(showtimeLabel)
-    router.push(`/booking?movie=${encodeMovie}&showtime=${encodeShowtime}`);
+  const handleBookingClick = (st) => {
+    const movieId = id;
+    const showtime = encodeURIComponent(new Date(st.dateTime).toISOString());
+    const showroom = encodeURIComponent(st.showroom || "");
+    router.push(`/booking?movieId=${movieId}&showtime=${showtime}&showroom=${showroom}`);
   };
 
 function toYouTubeEmbed(url) {
@@ -77,39 +78,26 @@ function toYouTubeEmbed(url) {
   <p className="font-medium mb-2">Showtimes:</p>
 
   <div className="flex flex-wrap gap-2">
-    {movie.showtimes && movie.showtimes.length > 0 ? (
-      movie.showtimes.map((st, index) => {
-        const showroom = st.showroom || "Showroom";
-        const dt = st.dateTime ? new Date(st.dateTime) : null;
+  {movie.showtimes?.length > 0 ? (
+  movie.showtimes.map((st, index) => {
+    const dt = st.dateTime ? new Date(st.dateTime) : null;
+    const date = dt?.toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" }) || "Date TBA";
+    const time = dt?.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) || "Time TBA";
 
-        const date = dt
-          ? dt.toLocaleDateString([], {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })
-          : "Date TBA";
+    return (
+      <button
+        key={index}
+        onClick={() => handleBookingClick(st)}
+        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+      >
+        {`${st.showroom} – ${date} ${time}`}
+      </button>
+    );
+  })
+) : (
+  <p className="text-sm text-gray-500">No showtimes available.</p>
+)}
 
-        const time = dt
-          ? dt.toLocaleTimeString([], {
-              hour: "numeric",
-              minute: "2-digit",
-            })
-          : "Time TBA";
-
-        return (
-          <button
-            key={index}
-            onClick={handleBookingClick}
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-          >
-            {`${showroom} – ${date} ${time}`}
-          </button>
-        );
-      })
-    ) : (
-      <p className="text-sm text-gray-500">No showtimes available.</p>
-    )}
   </div>
 </div>
 
