@@ -1,10 +1,11 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function BookingPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const movieId = searchParams.get("movieId");
   const showtime = searchParams.get("showtime");
   const showroom = searchParams.get("showroom");
@@ -15,7 +16,6 @@ export default function BookingPage() {
   const [promoCode, setPromoCode] = useState("");
   const [error, setError] = useState("");
 
-  // Fetch movie info
   useEffect(() => {
     if (!movieId) return;
     async function fetchMovie() {
@@ -42,7 +42,6 @@ export default function BookingPage() {
   };
   const embedUrl = toYouTubeEmbed(movie?.trailerUrl);
 
-  // Seat grid
   const rows = ["A", "B", "C", "D", "E"];
   const seatsPerRow = 7;
   const seatNumbers = rows.flatMap((row) =>
@@ -56,7 +55,7 @@ export default function BookingPage() {
       setTicketTypes((prev) => prev.slice(0, selectedSeats.length - 1));
     } else {
       setSelectedSeats([...selectedSeats, seat]);
-      setTicketTypes([...ticketTypes, "Adult"]); // default type
+      setTicketTypes([...ticketTypes, "Adult"]);
     }
   };
 
@@ -66,7 +65,8 @@ export default function BookingPage() {
     setTicketTypes(newTypes);
   };
 
-  const handleSubmit = (e) => {
+  // Updated handleSubmit
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (selectedSeats.length === 0) {
@@ -79,16 +79,35 @@ export default function BookingPage() {
       return;
     }
 
-    console.log({
+    const bookingData = {
       movie: movie?.title,
       showtime,
       showroom,
       seats: selectedSeats,
       ticketTypes,
       promoCode,
-    });
+    };
 
-    alert("Booking submitted! Please check your email for details.");
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData?.error || "Booking failed");
+      }
+
+      // Redirect to success page with booking info
+      router.push(
+        `/booking-success?movie=${encodeURIComponent(movie.title)}&showtime=${encodeURIComponent(showtime)}&showroom=${encodeURIComponent(showroom)}&seats=${encodeURIComponent(selectedSeats.join(","))}&ticketTypes=${encodeURIComponent(ticketTypes.join(","))}`
+      );
+    } catch (err) {
+      console.error("Booking failed:", err);
+      setError("Failed to submit booking. Please try again.");
+    }
   };
 
   if (!movieId) return <div>No movie selected.</div>;
@@ -147,7 +166,9 @@ export default function BookingPage() {
                   {seat}:
                   <select
                     value={ticketTypes[idx]}
-                    onChange={(e) => handleTicketTypeChange(idx, e.target.value)}
+                    onChange={(e) =>
+                      handleTicketTypeChange(idx, e.target.value)
+                    }
                     className="ml-2 px-2 py-1 rounded border"
                   >
                     <option>Adult</option>
