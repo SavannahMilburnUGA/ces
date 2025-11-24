@@ -144,7 +144,7 @@ export default function AdminAddPromo() {
                                 style={{ 
                                 backgroundColor: "var(--dark2)", 
                                 color: "var(--off-white)", 
-                                borderColor: errors.startDate ? "var(--pastel-red)" : "var(--dark-gray)" 
+                                borderColor: errors.startDate ? "var(--pastel-red)" : "var(--dark-gray)", colorScheme: "dark"
                                 }} 
                                 type="date" 
                                 value={form.startDate} 
@@ -165,7 +165,7 @@ export default function AdminAddPromo() {
                                 style={{ 
                                 backgroundColor: "var(--dark2)", 
                                 color: "var(--off-white)", 
-                                borderColor: errors.endDate ? "var(--pastel-red)" : "var(--dark-gray)" 
+                                borderColor: errors.endDate ? "var(--pastel-red)" : "var(--dark-gray)", colorScheme:"dark"
                                 }} 
                                 type="date" 
                                 value={form.endDate} 

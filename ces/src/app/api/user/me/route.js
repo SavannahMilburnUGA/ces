@@ -1,11 +1,11 @@
 // app/api/user/me/route.js
 import { NextResponse } from "next/server";
-import connectMongoDB from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 
 export async function GET(req) {
   try {
-    await connectMongoDB();
+    await connectDB();
 
     // Get cookie
     const cookie = req.cookies.get("userSession")?.value;

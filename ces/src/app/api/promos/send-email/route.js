@@ -37,16 +37,11 @@ export async function POST(req) {
         } // if 
 
         // Find all users who opted in for promotions 
-        const subscribedUsers = await User.find({ promoOptIn: true, status: "Active", suspended: false });
-
-        // Debug
-        console.log("=== DEBUG: Email Recipients ===");
-        console.log("Total users found:", subscribedUsers.length);
-        subscribedUsers.forEach(user => {
-            console.log(`  - ${user.email}: promoOptIn=${user.promoOptIn}, status=${user.status}, suspended=${user.suspended}`);
-        });
-        console.log("==============================");
-
+        const subscribedUsers = await User.find({ 
+            promoOptIn: true, 
+            status: "Active", 
+            suspended: false 
+        }); // subscribedUsers
         
         if (subscribedUsers.length === 0) {
             return NextResponse.json(
