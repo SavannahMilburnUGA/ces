@@ -20,6 +20,11 @@ const MovieSchema = new mongoose.Schema(
     posterUrl: { type: String, required: true },
     rating: { type: String, default: "NR" },
     description: { type: String, required: true },
+
+    cast: { type: [String], default: [] },
+    director: { type: String, default: "" },
+    producer: { type: String, default: "" },
+
     showtimes: {
       type: [ShowtimeSchema],
       default: [], }, 

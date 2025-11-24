@@ -34,8 +34,10 @@ export default function MovieDetails() {
   if (!movie) return <div>Movie not found</div>;
 
   // Simple click: just go to booking page
-  const handleBookingClick = () => {
-    router.push(`/booking`);
+  const handleBookingClick = (showtimeLabel) => {
+    const encodeMovie = encodeURIComponent(movie.title);
+    const encodeShowtime = encodeURIComponent(showtimeLabel)
+    router.push(`/booking?movie=${encodeMovie}&showtime=${encodeShowtime}`);
   };
 
 function toYouTubeEmbed(url) {

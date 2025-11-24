@@ -6,15 +6,14 @@ import mongoose from "mongoose";
 export async function GET(req, { params }) {
   await connectDB();
 
-  const { id } = await params;
+  const id = params.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid movie ID" }, { status: 400 });
   }
 
   try {
-    const _id = new mongoose.Types.ObjectId(id);
-    const movie = await Movie.findById({_id});
+    const movie = await Movie.findById(id);
     if (!movie) {
       return NextResponse.json({ error: "Movie not found" }, { status: 404 });
     }
@@ -36,9 +35,7 @@ export async function DELETE(req, { params }) {
   } // if 
 
   try {
-    const _id = new mongoose.Types.ObjectId(id);
-    const movie = await Movie.findByIdAndDelete(_id);
-    
+    const movie = await Movie.findByIdAndDelete(id);
     if (!movie) {
       return NextResponse.json({ error: "Movie not found" }, { status: 404 });
     } // if 
@@ -71,9 +68,8 @@ export async function PUT(req, { params }) {
       );
     }
 
-    const _id = new mongoose.Types.ObjectId(id);
     const updatedMovie = await Movie.findByIdAndUpdate(
-      _id,
+      id,
       { title, posterUrl, rating, description, showDate, trailerUrl, genre },
       { new: true, runValidators: true }
     );
