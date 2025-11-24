@@ -50,9 +50,15 @@ export async function POST(req) {
             ); // return
         } // if 
 
-        // Format dates for email
-        const startDate = new Date(promo.startDate).toLocaleDateString();
-        const endDate = new Date(promo.endDate).toLocaleDateString();
+        // Format date for display
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const day = String(date.getUTCDate()).padStart(2, '0');
+            const year = date.getUTCFullYear();
+            return `${month}/${day}/${year}`;
+        }; // formatDate
+        
         // Email content 
         const subject = `Special Promotion: ${promo.promoCode} - ${promo.discountPercent}% Off!`;
         const html = `
@@ -65,7 +71,7 @@ export async function POST(req) {
                             <span style="color: #a1161a; font-size: 20px; font-weight: bold;">${promo.promoCode}</span>
                         </p>
                         <p style="margin: 5px 0;"><strong>Discount:</strong> ${promo.discountPercent}% off your purchase</p>
-                        <p style="margin: 5px 0;"><strong>Valid:</strong> ${startDate} - ${endDate}</p>
+                        <p style="margin: 5px 0;"><strong>Valid:</strong> ${formatDate(promo.startDate)} - ${formatDate(promo.endDate)}</p>
                     </div>
                     <p>Use this code at checkout to save on your next booking at CES!</p>
                     <p>Thank you for being a valued customer.</p>
