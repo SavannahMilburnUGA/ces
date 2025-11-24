@@ -1,10 +1,11 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function BookingPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const movieId = searchParams.get("movieId");
   const showtime = searchParams.get("showtime");
   const showroom = searchParams.get("showroom");
@@ -14,6 +15,8 @@ export default function BookingPage() {
   const [ticketTypes, setTicketTypes] = useState([]);
   const [promoCode, setPromoCode] = useState("");
   const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
+  const [bookedSeats, setBookedSeats] = useState([]);
 
   // Fetch movie info
   useEffect(() => {
@@ -31,6 +34,42 @@ export default function BookingPage() {
     fetchMovie();
   }, [movieId]);
 
+  // Fetch logged-in user
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/user/me");
+        if (!res.ok) return setUser(null);
+        const data = await res.json();
+        setUser(data || null);
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+        setUser(null);
+      }
+    }
+    fetchUser();
+  }, []);
+
+  // Fetch booked seats
+  useEffect(() => {
+    if (!movieId || !showtime || !showroom) return;
+
+    async function fetchBookedSeats() {
+      try {
+        const res = await fetch(
+          `/api/bookings?movieId=${movieId}&showtime=${encodeURIComponent(
+            showtime
+          )}&showroom=${showroom}`
+        );
+        const data = await res.json();
+        if (data?.bookedSeats) setBookedSeats(data.bookedSeats);
+      } catch (err) {
+        console.error("Failed to fetch booked seats:", err);
+      }
+    }
+    fetchBookedSeats();
+  }, [movieId, showtime, showroom]);
+
   const posterUrl = movie?.posterUrl || "/placeholder-poster.jpg";
 
   const toYouTubeEmbed = (url) => {
@@ -42,7 +81,6 @@ export default function BookingPage() {
   };
   const embedUrl = toYouTubeEmbed(movie?.trailerUrl);
 
-  // Seat grid
   const rows = ["A", "B", "C", "D", "E"];
   const seatsPerRow = 7;
   const seatNumbers = rows.flatMap((row) =>
@@ -56,7 +94,7 @@ export default function BookingPage() {
       setTicketTypes((prev) => prev.slice(0, selectedSeats.length - 1));
     } else {
       setSelectedSeats([...selectedSeats, seat]);
-      setTicketTypes([...ticketTypes, "Adult"]); // default type
+      setTicketTypes([...ticketTypes, "Adult"]);
     }
   };
 
@@ -66,29 +104,62 @@ export default function BookingPage() {
     setTicketTypes(newTypes);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      setError("You must be logged in to submit a booking.");
+      return;
+    }
     if (selectedSeats.length === 0) {
       setError("Please select at least one seat.");
       return;
     }
-
     if (ticketTypes.length !== selectedSeats.length) {
       setError("Please select ticket type for all seats.");
       return;
     }
 
-    console.log({
-      movie: movie?.title,
+    const bookingData = {
+      movieId,
+      movieTitle: movie?.title,
       showtime,
       showroom,
       seats: selectedSeats,
       ticketTypes,
       promoCode,
-    });
+      userEmail: user.email,
+      userName: user.name,
+    };
 
-    alert("Booking submitted! Please check your email for details.");
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData?.error || "Booking failed");
+      }
+
+      // Redirect to success page
+      router.push(
+        `/booking-success?movie=${encodeURIComponent(
+          movie.title
+        )}&showtime=${encodeURIComponent(
+          showtime
+        )}&showroom=${encodeURIComponent(
+          showroom
+        )}&seats=${encodeURIComponent(
+          selectedSeats.join(",")
+        )}&ticketTypes=${encodeURIComponent(ticketTypes.join(","))}`
+      );
+    } catch (err) {
+      console.error("Booking failed:", err);
+      setError("Failed to submit booking. Please try again.");
+    }
   };
 
   if (!movieId) return <div>No movie selected.</div>;
@@ -122,20 +193,26 @@ export default function BookingPage() {
           <div>
             <p className="font-medium mb-2">Select Seats:</p>
             <div className="grid grid-cols-7 gap-2">
-              {seatNumbers.map((seat) => (
-                <button
-                  key={seat}
-                  type="button"
-                  className={`px-3 py-2 rounded ${
-                    selectedSeats.includes(seat)
-                      ? "bg-green-600 text-white"
-                      : "bg-gray-200 hover:bg-gray-300"
-                  }`}
-                  onClick={() => handleSeatToggle(seat)}
-                >
-                  {seat}
-                </button>
-              ))}
+              {seatNumbers.map((seat) => {
+                const isBooked = bookedSeats.includes(seat);
+                return (
+                  <button
+                    key={seat}
+                    type="button"
+                    disabled={isBooked}
+                    className={`px-3 py-2 rounded ${
+                      selectedSeats.includes(seat)
+                        ? "bg-green-600 text-white"
+                        : isBooked
+                        ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                        : "bg-gray-200 hover:bg-gray-300"
+                    }`}
+                    onClick={() => handleSeatToggle(seat)}
+                  >
+                    {seat}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -147,7 +224,9 @@ export default function BookingPage() {
                   {seat}:
                   <select
                     value={ticketTypes[idx]}
-                    onChange={(e) => handleTicketTypeChange(idx, e.target.value)}
+                    onChange={(e) =>
+                      handleTicketTypeChange(idx, e.target.value)
+                    }
                     className="ml-2 px-2 py-1 rounded border"
                   >
                     <option>Adult</option>
@@ -169,13 +248,24 @@ export default function BookingPage() {
             />
           </label>
 
+          {!user && (
+            <p className="text-yellow-600 text-sm mb-2">
+              Please log in to book tickets.
+            </p>
+          )}
+
           {error && <p className="text-red-600 font-semibold">{error}</p>}
 
           <button
             type="submit"
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+            disabled={!user}
+            className={`px-4 py-2 rounded text-white transition ${
+              user
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
-            Confirm Booking
+            {user ? "Confirm Booking" : "Log in to book"}
           </button>
         </form>
 
