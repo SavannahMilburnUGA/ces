@@ -78,8 +78,4 @@ export async function PUT(req, { params }) {
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 9adb0f6e960d93cd27be8f5282214359193b1631
