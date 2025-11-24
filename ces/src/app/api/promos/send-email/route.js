@@ -37,7 +37,12 @@ export async function POST(req) {
         } // if 
 
         // Find all users who opted in for promotions 
-        const subscribedUsers = await User.find({ promoOptIn: true, status: "Active", suspended: false });
+        const subscribedUsers = await User.find({ 
+            promoOptIn: true, 
+            status: "Active", 
+            suspended: false 
+        }); // subscribedUsers
+        
         if (subscribedUsers.length === 0) {
             return NextResponse.json(
                 { error: "No subscribed users found.", count: 0 }, 
@@ -92,9 +97,15 @@ export async function POST(req) {
         }); 
 
         return NextResponse.json(
-            { ok: true, message: "Promo email sent successfully.", successCount: successCount, failCount: failCount, totalSubscribed: subscribedUsers.length,},
+        { 
+            ok: true, 
+            message: "Promo email sent successfully.", 
+            successCount: successCount, 
+            failCount: failCount, 
+            totalSubscribed: subscribedUsers.length  // Changed name for clarity
+            },
             { status: 200 }
-        ); // return 
+        );
     } catch (error)
     {
         console.error("Error sending promo email:", error);

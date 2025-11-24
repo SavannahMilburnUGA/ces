@@ -1,15 +1,15 @@
 // /app/api/user/edit/route.js
 import { NextResponse } from "next/server";
-import connectMongoDB from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { sendEmail } from "@/lib/email";
 
 export async function PUT(req) {
-  await connectMongoDB();
+  await connectDB();
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const session = cookieStore.get("userSession");
   if (!session) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
@@ -33,6 +33,12 @@ export async function PUT(req) {
   // Update promoOptIn
   if (typeof updates.promoOptIn === "boolean" && updates.promoOptIn !== user.promoOptIn) {
     user.promoOptIn = updates.promoOptIn;
+    changed = true;
+  }
+
+  // Ensure suspended value is a Boolean - NOT a String
+  if (typeof updates.suspended !== "undefined") {
+    user.suspended = updates.suspended === true || updates.suspended === "true";
     changed = true;
   }
 

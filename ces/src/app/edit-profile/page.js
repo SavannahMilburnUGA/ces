@@ -14,7 +14,7 @@ export default function EditProfilePage() {
   });
 
   const [message, setMessage] = useState("");
-  //const [error, setError] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Fetch user data
@@ -253,8 +253,8 @@ export default function EditProfilePage() {
           />
           
           {message && <p className="text-green-600 text-center mt-2">{message}</p>}
+          {error && <p className="text-red-600 text-center mt-2">{error}</p>}
           
-
           <button
             type="submit"
             className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 mt-3 disabled:opacity-50"

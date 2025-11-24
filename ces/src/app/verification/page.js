@@ -36,7 +36,7 @@ export default function VerifyPage() {
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || "Invalid code");
       setMsg({ type: "success", text: data.message || "Account verified!" });
-      // TODO: router.push("/login") if you want auto-nav after success
+      router.push("/login") // if you want auto-nav after success
     } catch (err) {
       setMsg({ type: "error", text: err.message || "Verification failed" });
     } finally {
