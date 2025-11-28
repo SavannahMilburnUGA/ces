@@ -283,7 +283,7 @@ export default function BookingPage() {
               <div className="space-y-1">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>${orderTotal.subtotal.toFixed(2)}</span>
+                  <span>${orderTotal.ticketSum.toFixed(2)}</span>
                 </div>
                 {orderTotal.discount > 0 && (
                   <div className="flex justify-between text-green-600">

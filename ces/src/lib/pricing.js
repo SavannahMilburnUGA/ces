@@ -12,7 +12,7 @@ export function calculateOrderTotal (tickets, prices, promoDiscount = 0) {
     const ticketsMinusPromo = ticketSum - discount; 
 
     // Calculate tax
-    const tax = ticketsMinusPromo * prices.taxRate; 
+    const tax = (ticketsMinusPromo + prices.bookingFee) * prices.taxRate; 
 
     // Find overall total after taxes + booking fee
     const total = ticketsMinusPromo + tax + prices.bookingFee;

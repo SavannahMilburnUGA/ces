@@ -6,7 +6,7 @@ const priceSchema = new mongoose.Schema({
     Child: { type: Number, required: true, min: 0, default: 8.00 },
     Senior: { type: Number, required: true, min: 0, default: 10.00 }},
   bookingFee: { type: Number, required: true, min: 0, default: 1.50 },
-  taxRate: { type: Number, required: true, min: 0, max: 1, default: 0.07}
+  taxRate: { type: Number, required: true, min: 0, max: 1, default: 0.08}
   }, {  
     timestamps: true
 }); 
