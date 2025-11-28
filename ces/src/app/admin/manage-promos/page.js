@@ -1,18 +1,5 @@
 // Manage Promos Home page for Admin 
 // Can add a new promo, edit promo info, or delete a promo from the database and system. 
-
-// Allow Admin to Add Promos
-// Add Promo button - Promo Form: promoCode, discountPercent, startDate, endDate
-
-// Send email promos to registed users who have subscribed for promos:
-// Send Email button - confirmation
-// Need to find all users who opted in. 
-
-// Registed Users can subscribe/unsubscribe - check Edit Profile. 
-
-// Allow customers to use promo codes. 
-// /models/Promo.js: promoCode, discountPercent, startDate, endDate, isActive
-
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
