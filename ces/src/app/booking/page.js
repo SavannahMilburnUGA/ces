@@ -2,6 +2,7 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { calculateOrderTotal } from "@/lib/pricing";
 
 export default function BookingPage() {
   const searchParams = useSearchParams();
@@ -17,6 +18,7 @@ export default function BookingPage() {
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
   const [bookedSeats, setBookedSeats] = useState([]);
+  const [prices, setPrices] = useState(null);
 
   // Fetch movie info
   useEffect(() => {
@@ -70,6 +72,23 @@ export default function BookingPage() {
     fetchBookedSeats();
   }, [movieId, showtime, showroom]);
 
+  // Fetch prices
+  useEffect(() => {
+    async function fetchPrices() {
+      try {
+        const res = await fetch("/api/prices");
+        const data = await res.json();
+        // Check
+        if (data?.prices) {
+          setPrices(data.prices);
+        } // if 
+      } catch (error) {
+        console.error("Failed to fetch prices:", error);
+      } // try-catch
+    } // fetchPrices
+    fetchPrices();
+  }, []); // useEffect for prices
+
   const posterUrl = movie?.posterUrl || "/placeholder-poster.jpg";
 
   const toYouTubeEmbed = (url) => {
@@ -103,6 +122,16 @@ export default function BookingPage() {
     newTypes[index] = type;
     setTicketTypes(newTypes);
   };
+
+  // Calculate order total
+  const orderTotal = prices && selectedSeats.length > 0 ? calculateOrderTotal(
+    selectedSeats.map((seat, idx) => ({
+      type: ticketTypes[idx], 
+      seat
+    })), 
+    prices, 
+    0 // No promo for now 
+  ) : null; // orderTotal
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -229,9 +258,9 @@ export default function BookingPage() {
                     }
                     className="ml-2 px-2 py-1 rounded border"
                   >
-                    <option>Adult</option>
-                    <option>Child</option>
-                    <option>Senior</option>
+                    <option value="Adult">Adult {prices ? `($${prices.ticketPrices.Adult.toFixed(2)})` : ''}</option>
+                    <option value="Child">Child {prices ? `($${prices.ticketPrices.Child.toFixed(2)})` : ''}</option>
+                    <option value="Senior">Senior {prices ? `($${prices.ticketPrices.Senior.toFixed(2)})` : ''}</option>
                   </select>
                 </label>
               ))}
@@ -247,6 +276,36 @@ export default function BookingPage() {
               className="w-full px-3 py-2 border rounded"
             />
           </label>
+
+          {orderTotal && (
+            <div className="bg-gray-100 p-4 rounded">
+              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span>Subtotal:</span>
+                  <span>${orderTotal.subtotal.toFixed(2)}</span>
+                </div>
+                {orderTotal.discount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Discount:</span>
+                    <span>-${orderTotal.discount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span>Booking Fee:</span>
+                  <span>${orderTotal.bookingFee.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Tax ({(prices.taxRate * 100).toFixed(0)}%):</span>
+                  <span>${orderTotal.tax.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between font-bold text-lg border-t pt-2 mt-2">
+                  <span>Total:</span>
+                  <span>${orderTotal.total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {!user && (
             <p className="text-yellow-600 text-sm mb-2">
