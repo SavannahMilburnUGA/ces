@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const TicketSchema = new mongoose.Schema({
   ageCategory: { type: String, enum: ["child", "adult", "senior"], required: true },
-  age: { type: Number, required: true },
   seat: { type: String, required: true }, // e.g., "A3"
 });
 
