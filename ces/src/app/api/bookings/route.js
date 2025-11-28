@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import Price from "@/models/Price";
-import Promo from "@models/Promo";
+import Promo from "@/models/Promo";
 import { calculateOrderTotal } from "@/lib/pricing"; 
 
 export async function GET(req) {
@@ -93,11 +93,11 @@ export async function POST(req) {
       userEmail: bookingData.userEmail,
       userName: bookingData.userName,
       tickets,
-      totalPrice: tickets.length * 10, // simple pricing example
-      promoCode: bookingData.promoCode || null,
+      totalPrice: orderTotal.total, 
+      promoCode: validatedPromo ? bookingData.promoCode : null, 
     });
 
-    return NextResponse.json({ message: "Booking saved!", booking: newBooking });
+    return NextResponse.json({ message: "Booking saved!", booking: newBooking, totalPaid: orderTotal.total });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Booking failed" }, { status: 500 });
