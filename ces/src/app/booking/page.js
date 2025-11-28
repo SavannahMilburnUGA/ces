@@ -19,6 +19,9 @@ export default function BookingPage() {
   const [user, setUser] = useState(null);
   const [bookedSeats, setBookedSeats] = useState([]);
   const [prices, setPrices] = useState(null);
+  const [validatedPromo, setValidatedPromo] = useState(null);
+  const [promoError, setPromoError] = useState("");
+  const [checkingPromo, setCheckingPromo] = useState(false);
 
   // Fetch movie info
   useEffect(() => {
@@ -123,6 +126,35 @@ export default function BookingPage() {
     setTicketTypes(newTypes);
   };
 
+  // Handling applying promo code
+  const handleApplyPromo = async() => {
+    if(!promoCode.trim()) {
+      setPromoError("Please enter a promo code.");
+      setValidatedPromo(null);
+      return;
+    } // if
+
+    setCheckingPromo(true);
+    setPromoError("");
+    try {
+      const res = await fetch(`/api/promos/validate?code=${promoCode.trim()}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setPromoError(data.error || "Invalid promo code.");
+        setValidatedPromo(null);
+      } else {
+        setValidatedPromo(data.promo);
+        setPromoError("");
+      } // if-else
+    } catch (error) {
+      setPromoError("Failed to validate promo code.");
+      setValidatedPromo(null);
+    } finally {
+      setCheckingPromo(false);
+    }// try-catch-finally
+  }; // handleApplyPromo
+
   // Calculate order total
   const orderTotal = prices && selectedSeats.length > 0 ? calculateOrderTotal(
     selectedSeats.map((seat, idx) => ({
@@ -130,7 +162,7 @@ export default function BookingPage() {
       seat
     })), 
     prices, 
-    0 // No promo for now 
+    validatedPromo?.discountPercent || 0
   ) : null; // orderTotal
 
   const handleSubmit = async (e) => {
@@ -156,7 +188,7 @@ export default function BookingPage() {
       showroom,
       seats: selectedSeats,
       ticketTypes,
-      promoCode,
+      promoCode: validatedPromo ? promoCode : "",
       userEmail: user.email,
       userName: user.name,
     };
@@ -267,15 +299,48 @@ export default function BookingPage() {
             </div>
           )}
 
-          <label>
-            Promo Code (optional):
-            <input
-              type="text"
-              value={promoCode}
-              onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-              className="w-full px-3 py-2 border rounded"
-            />
-          </label>
+          <div>
+            <label className="block mb-2 font-medium">
+              Promo Code (optional):
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={promoCode}
+                onChange={(e) => {
+                  setPromoCode(e.target.value.toUpperCase());
+                  setPromoError("");
+                  setValidatedPromo(null);
+                }}
+                className="flex-1 px-3 py-2 border rounded"
+                placeholder="Enter promo code"
+              />
+              <button
+                type="button"
+                onClick={handleApplyPromo}
+                disabled={checkingPromo || !promoCode.trim()}
+                className={`px-4 py-2 rounded text-white transition ${
+                  checkingPromo || !promoCode.trim()
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {checkingPromo ? "Checking..." : "Apply"}
+              </button>
+            </div>
+            
+            {validatedPromo && (
+              <p className="text-green-600 text-sm mt-2">
+                ✓ Promo code applied: {validatedPromo.discountPercent}% off
+              </p>
+            )}
+            
+            {promoError && (
+              <p className="text-red-600 text-sm mt-2">
+                {promoError}
+              </p>
+            )}
+          </div>
 
           {orderTotal && (
             <div className="bg-gray-100 p-4 rounded">
