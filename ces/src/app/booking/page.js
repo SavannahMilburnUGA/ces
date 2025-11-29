@@ -215,7 +215,9 @@ export default function BookingPage() {
           showroom
         )}&seats=${encodeURIComponent(
           selectedSeats.join(",")
-        )}&ticketTypes=${encodeURIComponent(ticketTypes.join(","))}`
+        )}&ticketTypes=${encodeURIComponent(
+          ticketTypes.join(",")
+        )}&total=${result.totalPaid || 0}&promoCode=${validatedPromo?.promoCode || ""}`
       );
     } catch (err) {
       console.error("Booking failed:", err);
