@@ -88,24 +88,6 @@ const NavBar = () => {
               >
                 Home
               </Link>
-              <Link
-                href="/movies"
-                className="transition duration-200"
-                style={{ color: "#D3D3D3" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#E5383B")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#D3D3D3")}
-              >
-                All Movies
-              </Link>
-              <Link
-                href="/showtimes"
-                className="transition duration-200"
-                style={{ color: "#D3D3D3" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#E5383B")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#D3D3D3")}
-              >
-                By Showtimes
-              </Link>
               {isLoggedIn && isAdmin && (
                 <Link
                 href="/admin"
