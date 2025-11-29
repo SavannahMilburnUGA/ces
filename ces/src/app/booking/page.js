@@ -205,6 +205,7 @@ export default function BookingPage() {
         throw new Error(errorData?.error || "Booking failed");
       }
 
+
       // Redirect to success page
       router.push(
         `/booking-success?movie=${encodeURIComponent(
@@ -217,7 +218,7 @@ export default function BookingPage() {
           selectedSeats.join(",")
         )}&ticketTypes=${encodeURIComponent(
           ticketTypes.join(",")
-        )}&total=${result.totalPaid || 0}&promoCode=${validatedPromo?.promoCode || ""}`
+        )}&total=${orderTotal?.total || 0}&promoCode=${validatedPromo?.promoCode || ""}`
       );
     } catch (err) {
       console.error("Booking failed:", err);
