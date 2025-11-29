@@ -7,6 +7,7 @@ const TicketSchema = new mongoose.Schema({
 
 const BookingSchema = new mongoose.Schema({
   movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie", required: true },
+  movieTitle: String,
   showtime: {
     showroom: { type: String, required: true },
     dateTime: { type: Date, required: true },

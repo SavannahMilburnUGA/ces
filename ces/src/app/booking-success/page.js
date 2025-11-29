@@ -40,7 +40,14 @@ export default function BookingSuccess() {
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Showtime:</span>
               <span className="font-semibold">
-                {new Date(showtime).toLocaleString()}
+                {new Date(showtime).toLocaleString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  })}
               </span>
             </div>
 

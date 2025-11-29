@@ -86,6 +86,7 @@ export async function POST(req) {
 
     const newBooking = await Booking.create({
       movieId: bookingData.movieId,
+      movieTitle: bookingData.movieTitle,
       showtime: {
         showroom: bookingData.showroom,
         dateTime: new Date(bookingData.showtime),
@@ -96,6 +97,14 @@ export async function POST(req) {
       totalPrice: orderTotal.total, 
       promoCode: validatedPromo ? bookingData.promoCode : null, 
     });
+
+    // Send confirmation email
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/bookings/send-email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bookingId: newBooking._id.toString() }),
+    }).catch((err) => console.error("Failed to send confirmation email:", err));
+    
 
     return NextResponse.json({ message: "Booking saved!", booking: newBooking, totalPaid: orderTotal.total });
   } catch (err) {
