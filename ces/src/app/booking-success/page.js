@@ -104,7 +104,7 @@ export default function BookingSuccess() {
             Back to Home
           </button>
           <button
-            onClick={() => router.push("/profile/orders")}
+            onClick={() => router.push("/view-history")}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
             View My Bookings

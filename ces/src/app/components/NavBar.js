@@ -103,12 +103,21 @@ const NavBar = () => {
 
               {/*Show Profile button if logged in */}
               {isLoggedIn && (
+                <>
+                  <Link
+                    href="/view-history"
+                    className="transition duration-200 border border-[#E5383B] px-4 py-1 rounded-md text-[#E5383B] hover:bg-[#E5383B] hover:text-white"
+                  >
+                    View History
+                  </Link>
+
                 <Link
                   href="/edit-profile"
                   className="transition duration-200 border border-[#E5383B] px-4 py-1 rounded-md text-[#E5383B] hover:bg-[#E5383B] hover:text-white"
                 >
                   Profile
                 </Link>
+              </>
               )}
 
               {/* Conditional login/logout */}
