@@ -181,7 +181,19 @@ export default function BookingPage() {
       return;
     }
 
-    const bookingData = {
+    router.push(
+      `/checkout?movieId=${movieId}` +
+        `&movieTitle=${encodeURIComponent(movie.title)}` +
+        `&showtime=${encodeURIComponent(showtime)}` +
+        `&showroom=${encodeURIComponent(showroom)}` +
+        `&seats=${encodeURIComponent(selectedSeats.join(","))}` +
+        `&ticketTypes=${encodeURIComponent(ticketTypes.join(","))}` +
+        `&total=${orderTotal?.total || 0}` +
+        `&promoCode=${validatedPromo?.promoCode || ""}`
+    );
+  };
+
+   /*  const bookingData = {
       movieId,
       movieTitle: movie?.title,
       showtime,
@@ -191,9 +203,9 @@ export default function BookingPage() {
       promoCode: validatedPromo ? promoCode : "",
       userEmail: user.email,
       userName: user.name,
-    };
+    }; */
 
-    try {
+    /* try {
       const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -224,7 +236,7 @@ export default function BookingPage() {
       console.error("Booking failed:", err);
       setError("Failed to submit booking. Please try again.");
     }
-  };
+  }; */
 
   if (!movieId) return <div>No movie selected.</div>;
   if (!movie) return <div>Loading movie info...</div>;

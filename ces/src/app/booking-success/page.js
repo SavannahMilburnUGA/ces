@@ -1,7 +1,8 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { calculateOrderTotal } from "@/lib/pricing";
 
 export default function BookingSuccess() {
   const searchParams = useSearchParams();
