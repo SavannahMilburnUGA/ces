@@ -10,9 +10,9 @@ export default function AdminAddMovie() {
     posterUrl: "",
     rating: "",
     description: "",
-    showDate: "",
     trailerUrl: "",
-    genre: ""
+    genre: "",
+    isScheduled: false,
   });
   
   const router = useRouter();
@@ -96,15 +96,7 @@ export default function AdminAddMovie() {
         </label>
         <br/><br/>
 
-        <label>
-          Show Date
-          <input 
-          className="w-full rounded-lg border border-black" 
-          type="date" 
-          value={form.showDate} onChange={e=>update("showDate", e.target.value)} required
-           />
-        </label>
-        <br/><br/>
+        
 
         <label>
           Trailer URL

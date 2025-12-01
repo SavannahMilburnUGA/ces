@@ -28,9 +28,14 @@ const MovieSchema = new mongoose.Schema(
     showtimes: {
       type: [ShowtimeSchema],
       default: [], }, 
-    showDate: { type: Date, required: true },
+    //showDate: { type: Date, required: true },
     trailerUrl: { type: String, required: true },
-    genre: { type: String, required: true }
+    genre: { type: String, required: true },
+ 
+    isScheduled: {
+      type: Boolean,
+      default: false,  // ALL new movies = Coming Soon
+    },
   },
    {
     timestamps: true,

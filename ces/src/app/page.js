@@ -64,23 +64,18 @@ export default function Home() {
   
   // Determing Currently Running & Coming Soon movies
   const runOrSoon = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  // Currently Running = scheduled
+  const current = filteredMovies.filter((movie) => movie.isScheduled === true);
 
-    const current = filteredMovies.filter(movie => {
-      const showDate = new Date(movie.showDate);
-      showDate.setHours(0, 0, 0, 0);
-      return showDate <= today;
-    }); // current
+  // Coming Soon = NOT scheduled
+  const comingSoon = filteredMovies.filter(
+    (movie) => movie.isScheduled !== true
+  );
 
-    const comingSoon = filteredMovies.filter(movie => {
-      const showDate = new Date(movie.showDate);
-      showDate.setHours(0, 0, 0, 0);
-      return showDate > today;
-    }); // comingSoon
+  return { current, comingSoon };
+};
 
-    return { current, comingSoon };
-  }; // runOrSoon
+// runOrSoon
 
   const { current, comingSoon } = runOrSoon();
 

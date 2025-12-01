@@ -59,10 +59,23 @@ export default function ScheduleMoviePage() {
         setError(data.message || "Something went wrong scheduling the showtime.");
         return;
       }
+      const updateRes = await fetch(`/api/movies/${movieId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isScheduled: true }),
+      });
 
+      if (!updateRes.ok) {
+        // not fatal for the page, but let admin know
+        const msg = await updateRes.json().catch(() => ({}));
+        console.error("Failed to update movie isScheduled:", msg);
+        setError("Showtime added, but failed to mark movie as scheduled.");
+      }
+      
       // append new showtime to state
       setMovie((prev) => ({
         ...prev,
+         isScheduled: true,
         showtimes: [...(prev.showtimes || []), data],
       }));
 
