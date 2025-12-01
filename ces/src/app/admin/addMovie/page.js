@@ -13,6 +13,9 @@ export default function AdminAddMovie() {
     trailerUrl: "",
     genre: "",
     isScheduled: false,
+    director: "",   
+    producer: "",  
+    cast: "", 
   });
   
   const router = useRouter();
@@ -95,6 +98,41 @@ export default function AdminAddMovie() {
            />
         </label>
         <br/><br/>
+
+
+
+{/* Director */}
+<label>
+  Director
+  <input
+    className="w-full rounded-lg border border-black"
+    value={form.director}
+    onChange={e => update("director", e.target.value)}
+  />
+</label>
+<br /><br />
+
+{/*Producer */}
+<label>
+  Producer(s)
+  <input
+    className="w-full rounded-lg border border-black"
+    value={form.producer}
+    onChange={e => update("producer", e.target.value)}
+  />
+</label>
+<br /><br />
+
+{/*  Cast  */}
+<label>
+  Cast 
+  <input
+    className="w-full rounded-lg border border-black"
+    value={form.cast}
+    onChange={e => update("cast", e.target.value)}
+  />
+</label>
+<br /><br />
 
         
 

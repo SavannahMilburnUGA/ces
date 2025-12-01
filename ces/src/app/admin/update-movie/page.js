@@ -16,7 +16,10 @@ export default function UpdateMovie() {
         description: "",
         showDate: "",
         trailerUrl: "",
-        genre: ""
+        genre: "",
+        director: "",   
+        producer: "",   
+        cast: "",
     }); // form
     
     // Use state 
@@ -44,9 +47,11 @@ export default function UpdateMovie() {
                         posterUrl: data.posterUrl || "",
                         rating: data.rating || "",
                         description: data.description || "",
-                        showDate: data.showDate ? data.showDate.split('T')[0] : "",
                         trailerUrl: data.trailerUrl || "",
-                        genre: data.genre || ""
+                        genre: data.genre || "",
+                        director: data.director || "",   
+                        producer: data.producer || "",   
+                        cast: data.cast || "", 
                     }); // setForm
                 } // if 
             } catch (err) {
@@ -147,11 +152,55 @@ export default function UpdateMovie() {
                                 value={form.description} onChange={e => update("description", e.target.value)} required />
                         </label>
                         <br/><br/>
-                        <label style={{ color: "var(--off-white)" }}> Show Date
-                            <input className="w-full rounded-lg border p-2 mt-1" style={{ backgroundColor: "var(--dark2)", color: "var(--off-white)", borderColor: "var(--dark-gray)" }} type="date" 
-                                value={form.showDate} onChange={e => update("showDate", e.target.value)} required />
+
+                        {/*Director */}
+                        <label style={{ color: "var(--off-white)" }}> Director
+                            <input
+                                className="w-full rounded-lg border p-2 mt-1"
+                                style={{
+                                    backgroundColor: "var(--dark2)",
+                                    color: "var(--off-white)",
+                                    borderColor: "var(--dark-gray)",
+                                }}
+                                value={form.director}
+                                onChange={(e) => update("director", e.target.value)}
+                                required
+                            />
                         </label>
-                        <br/><br/>
+                        <br /><br />
+
+                        {/*Producer */}
+                        <label style={{ color: "var(--off-white)" }}> Producer(s)
+                            <input
+                                className="w-full rounded-lg border p-2 mt-1"
+                                style={{
+                                    backgroundColor: "var(--dark2)",
+                                    color: "var(--off-white)",
+                                    borderColor: "var(--dark-gray)",
+                                }}
+                                value={form.producer}
+                                onChange={(e) => update("producer", e.target.value)}
+                                required
+                            />
+                        </label>
+                        <br /><br />
+
+                        {/* Cast */}
+                        <label style={{ color: "var(--off-white)" }}> Cast
+                            <textarea
+                                className="w-full rounded-lg border p-2 mt-1"
+                                style={{
+                                    backgroundColor: "var(--dark2)",
+                                    color: "var(--off-white)",
+                                    borderColor: "var(--dark-gray)",
+                                }}
+                                value={form.cast}
+                                onChange={(e) => update("cast", e.target.value)}
+                                required
+                            />
+                        </label>
+                        <br /><br />
+
                         <label style={{ color: "var(--off-white)" }}> Trailer URL
                             <input className="w-full rounded-lg border p-2 mt-1" style={{ backgroundColor: "var(--dark2)", color: "var(--off-white)", borderColor: "var(--dark-gray)" }} 
                                 value={form.trailerUrl} onChange={e => update("trailerUrl", e.target.value)} required />

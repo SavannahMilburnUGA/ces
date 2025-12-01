@@ -73,6 +73,18 @@ function toYouTubeEmbed(url) {
             <p className="font-medium">Genre: {movie.genre}</p>
             <p>{movie.description}</p>
 
+
+          {/* Director / Producer */}
+            {movie.director && (
+              <p className="font-medium">Director: {movie.director}</p>
+            )}
+            {movie.producer && (
+              <p className="font-medium">Producer: {movie.producer}</p>
+            )}
+
+            {/*  Cast */}
+          <p className="font-medium">Cast: {movie.cast}</p>
+
             {/* Showtimes as simple buttons */}
 <div className="mt-4">
   <p className="font-medium mb-2">Showtimes:</p>

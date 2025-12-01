@@ -59,7 +59,7 @@ export async function PUT(req, { params }) {
 
   try {
     const body = await req.json();
-    const { title, posterUrl, rating, description,trailerUrl, genre, isScheduled,} = body;
+    const { title, posterUrl, rating, description,trailerUrl, genre, isScheduled, director, producer, cast} = body;
 
     if (!title || !posterUrl || !description || !trailerUrl || !genre) {
       return NextResponse.json({ error: "All required fields must be provided" }, { status: 400 });
@@ -71,7 +71,7 @@ export async function PUT(req, { params }) {
 
     const updatedMovie = await Movie.findByIdAndUpdate(
       id,
-      { title, posterUrl, rating, description,trailerUrl, genre },
+      { title, posterUrl, rating, description,trailerUrl, genre, director, producer, cast },
       { new: true, runValidators: true }
     );
 
